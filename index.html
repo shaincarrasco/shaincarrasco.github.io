@@ -3,53 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shain Carrasco | Raspberry Pi</title>
-<meta name="description" content="Shain Carrasco's Raspberry Pi projects.">
+<title>Shain Carrasco</title>
+<meta name="description" content="Shain Carrasco builds machine-learning products, research tools and Roblox games.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500&display=swap" rel="stylesheet">
 <style>
-  html, body {
+  :root {
+    --bg: #f6f4ef;
+    --surface: #fdfcf9;
+    --ink: #1f1d1a;
+    --muted: #6b665e;
+    --line: #dcd7cc;
+    --accent: #2f5d50;
+    --tag: #ebe7dd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161614;
+      --surface: #1e1d1a;
+      --ink: #ece8df;
+      --muted: #a29c91;
+      --line: #34322d;
+      --accent: #8fbfae;
+      --tag: #2a2925;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
     margin: 0;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #fffaf9;
-    color: #241b1f;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    text-align: center;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.6 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
+  a { color: var(--accent); text-underline-offset: 3px; }
+  main { max-width: 860px; margin: 0 auto; padding: 72px 20px 96px; }
 
-  main { padding: 24px; }
-
-  h1 {
-    font-size: 2.2rem;
-    margin: 0 0 8px;
-    letter-spacing: -0.02em;
+  header h1 {
+    font-family: Newsreader, Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.2rem, 6vw, 3rem);
+    line-height: 1.1;
+    margin: 0 0 16px;
   }
+  header p { color: var(--muted); font-size: 1.1rem; max-width: 600px; margin: 0 0 20px; }
+  .links { display: flex; gap: 20px; flex-wrap: wrap; font-weight: 500; }
 
-  p {
-    color: #7a6a6d;
-    font-size: 1.1rem;
-    margin: 0 0 28px;
-  }
-
-  a.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    border-radius: 10px;
-    background: #c2185b;
-    color: #fff;
-    text-decoration: none;
+  section { margin-top: 80px; }
+  h2 {
+    font-size: 0.8rem;
     font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
   }
+  .intro { color: var(--muted); margin: -4px 0 24px; max-width: 640px; }
 
-  a.btn:hover { background: #ad1457; }
+  .project {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+    align-items: center;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .project:last-child { border-bottom: 0; }
+  .project img {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    display: block;
+  }
+  h3 { font-size: 1.3rem; font-weight: 600; margin: 0 0 4px; }
+  .meta { color: var(--muted); font-size: 0.9rem; margin: 0 0 12px; }
+  .project p { margin: 0 0 12px; }
+  .stats { list-style: none; padding: 0; margin: 0 0 14px; font-size: 0.95rem; }
+  .stats li { padding: 3px 0; }
+  .stats b { font-weight: 600; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 14px; }
+  .tags span { background: var(--tag); border-radius: 4px; padding: 2px 8px; font-size: 0.8rem; color: var(--muted); }
+  .actions { display: flex; gap: 18px; flex-wrap: wrap; font-weight: 500; font-size: 0.95rem; }
+
+  .games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .game {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 20px;
+  }
+  .game.wide { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: center; }
+  .game.wide img { width: 100%; border-radius: 4px; display: block; }
+  .status { display: inline-block; font-size: 0.75rem; font-weight: 600; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 1px 10px; margin-bottom: 10px; }
+  .game h3 { font-size: 1.1rem; }
+  .game p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+  .small { list-style: none; padding: 0; margin: 0; }
+  .small li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+  .small li:last-child { border-bottom: 0; }
+  .small span { color: var(--muted); }
+
+  footer { margin-top: 80px; color: var(--muted); font-size: 0.9rem; }
+
+  @media (max-width: 720px) {
+    main { padding: 48px 16px 72px; }
+    .project, .game.wide { grid-template-columns: 1fr; }
+    .games { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
-  <main>
+<main>
+  <header>
     <h1>Shain Carrasco</h1>
-    <p>Raspberry Pi projects &amp; experiments.</p>
-    <a class="btn" href="https://github.com/shaincarrasco/raspberryPi" target="_blank" rel="noopener">View on GitHub</a>
-  </main>
+    <p>I build machine-learning products, research tools for astronomy, and Roblox games.</p>
+    <div class="links">
+      <a href="https://github.com/shaincarrasco">GitHub</a>
+      <a href="https://climbintel.com">Climb Intel</a>
+      <a href="https://www.roblox.com/communities/7205703">Plymouth Experiences</a>
+    </div>
+  </header>
+
+  <section>
+    <h2>Selected work</h2>
+
+    <article class="project">
+      <div>
+        <h3>Climb Intel</h3>
+        <p class="meta">Founder and sole developer &middot; live product</p>
+        <p>An app that grades Kilter Board routes and predicts how hard a climb will feel for your body, using your height, wingspan and reach. You can also upload a video of yourself climbing and get feedback on each move.</p>
+        <ul class="stats">
+          <li><b>72.8%</b> of grades within &plusmn;1 V-grade, ~90% within &plusmn;2</li>
+          <li><b>137,000</b> graded routes used for training</li>
+          <li>Tracks <b>17</b> body joints from phone video with MediaPipe</li>
+        </ul>
+        <div class="tags"><span>XGBoost + LightGBM ensemble</span><span>Flask</span><span>PostgreSQL</span><span>PWA</span><span>Stripe</span></div>
+        <div class="actions"><a href="https://climbintel.com">Visit climbintel.com</a></div>
+      </div>
+      <img src="img/climbintel.jpg" alt="Climb Intel: the same route isn't the same climb for every body" loading="lazy">
+    </article>
+
+    <article class="project">
+      <div>
+        <h3>Scoring AI telescope schedules</h3>
+        <p class="meta">Research &middot; SkAI Institute, summer 2026</p>
+        <p>An AI telescope scheduler needs a way to tell a good night of observing from a bad one. I built a scoring toolkit for this and tested it on 105,890 real Dark Energy Survey exposures.</p>
+        <ul class="stats">
+          <li>Calibrated effective exposure time matches the DES pipeline at <b>0.952</b> log-correlation</li>
+          <li>Scored <b>615</b> real survey nights</li>
+          <li>Found a Simpson's paradox: scheduler logs make seeing look better at high airmass, which is physically backwards</li>
+        </ul>
+        <div class="tags"><span>Python</span><span>pandas</span><span>astropy</span><span>matplotlib</span></div>
+        <div class="actions">
+          <a href="https://shaincarrasco.github.io/skai-metrics/site/">Live dashboard</a>
+          <a href="https://github.com/shaincarrasco/skai-metrics">Code</a>
+          <a href="https://github.com/shaincarrasco/skai-metrics/blob/main/paper/poster.pdf">Poster</a>
+        </div>
+      </div>
+      <img src="img/skai.png" alt="Median delivered seeing across the DES footprint" loading="lazy">
+    </article>
+  </section>
+
+  <section>
+    <h2>Roblox games</h2>
+    <p class="intro">Built with <a href="https://www.roblox.com/communities/7205703">Plymouth Experiences</a>, a small Chicago game studio. These games are still in development and not public yet.</p>
+    <div class="games">
+      <div class="game wide">
+        <div>
+          <span class="status">In development</span>
+          <h3>Scrap City</h3>
+          <p>Open-world urban survival. Search dumpsters for food, water, weapons and materials, build a base from what you find, then team up with other players or fight them.</p>
+        </div>
+        <img src="img/scrap-city.jpg" alt="Scrap City item cards: scrap metal, canned food, pipe wrench, duct tape and more" loading="lazy">
+      </div>
+      <div class="game">
+        <span class="status">In development</span>
+        <h3>Be a Stone</h3>
+        <p>Roll a stone through adventure levels, polish it, and rebirth into rarer stones. Hardcore mode runs nine stages on one life, with ghost replays and a global leaderboard.</p>
+      </div>
+      <div class="game">
+        <span class="status">In development</span>
+        <h3>Canopy Bureau</h3>
+        <p>A co-op squirrel detective game. Solve cases by exploring living treetop districts, finding clues in any order you like.</p>
+      </div>
+      <div class="game">
+        <span class="status">Tooling</span>
+        <h3>Studio toolkit</h3>
+        <p>Our team's shared engine, task board and playtest bots, which play builds in Roblox Studio the way real players would.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Earlier</h2>
+    <ul class="small">
+      <li><a href="https://github.com/shaincarrasco/FinalProj">Data analysis final project</a> <span>&middot; 2022 &middot; Jupyter, pandas</span></li>
+      <li><a href="https://github.com/shaincarrasco/raspberryPi">Raspberry Pi experiments</a> <span>&middot; Python, hardware</span></li>
+    </ul>
+  </section>
+
+  <footer>&copy; 2026 Shain Carrasco</footer>
+</main>
 </body>
 </html>
