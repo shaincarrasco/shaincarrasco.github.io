@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const groups: [string, string][] = [['product', 'Products'], ['research', 'Research'], ['tools', 'Tools'], ['games', 'Games'], ['archive', 'Earlier']];
 ---
-<Base title="Work, Shain Carrasco" description="Every project, public and private, with the numbers behind it.">
+<Base title="Work" description="Every project Shain Carrasco has built since 2022, public and private, with the number each one was measured on." og="/og/work.png">
   <div class="mx-auto max-w-[1280px] px-5 py-20">
     <h1 class="h2 text-[48px] md:text-[72px]">Work</h1>
     <p class="mt-4 max-w-[560px] text-lg text-chalk-dim">Public repos link to code. Private ones show the product and the measurements; ask me for the code.</p>

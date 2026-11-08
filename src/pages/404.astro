@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Page not found" description="This page does not exist.">
+  <div class="mx-auto max-w-[1280px] px-5 py-32">
+    <h1 class="display text-[clamp(64px,10vw,140px)]">Not here.</h1>
+    <p class="mt-8 max-w-[560px] text-xl leading-[1.4]">That page does not exist, or it moved when the site was rebuilt. Everything is reachable from the work index.</p>
+    <div class="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-lg font-semibold">
+      <a href="/" class="link">Home</a><a href="/projects/" class="link">All work</a><a href="/research/" class="link">Research</a>
+    </div>
+  </div>
+</Base>

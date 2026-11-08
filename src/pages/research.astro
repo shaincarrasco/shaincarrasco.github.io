@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+import SkaiFeature from '../components/SkaiFeature.astro';
+---
+<Base
+  title="Research"
+  description="Summer 2026 at the SkAI Institute: a reward for AI telescope schedulers, tested on 105,889 Dark Energy Survey exposures. Poster, report, dashboard and write-up."
+  og="/og/research.png"
+  ogAlt="Grading a night in one number: SkAI Institute research by Shain Carrasco"
+>
+  <SkaiFeature headingLevel="h1" />
+  <section class="mx-auto max-w-[1280px] px-5">
+    <h2 class="border-b border-rule pb-4 text-2xl font-semibold">How the work is laid out</h2>
+    <ul class="mt-2 divide-y divide-rule">
+      {[
+        ['/projects/skai-metrics/', 'Write-up', 'The question, the metric, what held up, and the Simpson\'s paradox finding, in plain language.'],
+        ['/skai/report/', 'Full report', 'Every figure and table from the summer, with captions. Twelve figures.'],
+        ['/skai/dashboard/', 'Dashboard', 'Explore the survey night by night: scores, conditions, and progress over the footprint.'],
+        ['/skai/poster.pdf', 'Poster', 'Grading a Night in One Number, as presented. PDF, 1.4 MB.'],
+      ].map(([href, name, what]) => (
+        <li><a href={href} class="row grid gap-2 py-6 md:grid-cols-[260px_1fr]">
+          <span class="row-title text-2xl font-semibold">{name}</span>
+          <span class="text-lg leading-[1.4]">{what}</span>
+        </a></li>
+      ))}
+    </ul>
+  </section>
+</Base>

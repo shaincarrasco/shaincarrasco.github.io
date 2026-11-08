@@ -11,13 +11,16 @@ const projects = defineCollection({
     visibility: z.enum(['public', 'private']),
     category: z.enum(['product', 'research', 'tools', 'games', 'archive']),
     repo: z.string().url().optional(),
-    live: z.string().url().optional(),
+    live: z.string().optional(),
     stack: z.array(z.string()).default([]),
     metrics: z.array(z.object({ value: z.string(), label: z.string(), source: z.string().optional() })).default([]),
     accent: z.enum(['lime', 'cyan', 'magenta', 'amber']).default('lime'),
     image: z.string().optional(),
+    imageAlt: z.string().optional(),
+    device: z.enum(['desktop', 'phone', 'figure']).default('desktop'),
+    year: z.number(),
     order: z.number().default(100),
-    featured: z.boolean().default(false),
+
   }),
 });
 

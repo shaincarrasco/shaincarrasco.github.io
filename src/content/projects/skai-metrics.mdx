@@ -1,38 +1,64 @@
 ---
 title: Telescope-scheduler metrics
-tagline: Evaluation metrics and rewards for AI telescope schedulers, built and validated on 105,890 real Dark Energy Survey exposures. SkAI Institute, summer 2026.
+tagline: Evaluation metrics and rewards for AI telescope schedulers, built and validated on 105,889 real Dark Energy Survey exposures. SkAI Institute, summer 2026.
 short: "Scores how good a night of observing was, so an AI scheduler can be trained and judged. SkAI Institute research on Dark Energy Survey data."
 status: research
 visibility: private
 category: research
-live: https://shaincarrasco.github.io/skai-metrics/
+live: /skai/dashboard/
 stack: [Python, pandas, astropy, matplotlib, Jupyter]
 metrics:
-  - { value: "105,890", label: "DES exposures analyzed" }
+  - { value: "105,889", label: "DES exposures analyzed" }
   - { value: "0.952", label: "log-correlation with the DES pipeline" }
-  - { value: "615", label: "real survey nights scored" }
+  - { value: "615", label: "survey nights scored on the composite metric" }
 accent: cyan
-image: /img/skai.png
 order: 2
-featured: true
+year: 2026
+image: skai/poster.png
+imageAlt: "Poster: Grading a Night in One Number, presented at the SkAI Institute, 2026."
+device: figure
 ---
+
+I spent summer 2026 as a researcher at the NSF-Simons AI Institute for the Sky (SkAI) in Chicago, advised by Prof. Alex Drlica-Wagner and mentored by Paul Chichura and Rachel Hur. The project: give an AI telescope scheduler a single number for how good a night of observing was, then test that number against seven years of real survey data.
+
+- [The poster (PDF)](/skai/poster.pdf)
+- [The full report, every figure and table](/skai/report/)
+- [Interactive dashboard](/skai/dashboard/)
 
 ## The question
 
-An AI telescope scheduler picks what to point at next. To train or judge one you need a number that says how good a night of observing was. Clock time is not enough: 90 seconds through bad seeing, clouds or a bright sky is worth less science than the same 90 seconds on a perfect night.
+A scheduler picks what to point at next. To train or judge one you need a reward. Clock time is not enough: 90 seconds through bad seeing, thin cloud or a bright sky is worth less science than the same 90 seconds on a perfect night.
 
 ## The metric
 
-Effective exposure time discounts each exposure by its conditions: `t_eff = η² · (FWHM_fid / FWHM)² · (b_dark / b)`. A schedule's yield is how much of the night it turns into effective science seconds. Image-quality and sky-coverage sub-scores combine into one composite per night.
+Each exposure is discounted by its conditions. Effective exposure time weighs transparency, image sharpness and sky brightness, each against a fiducial value:
 
-## Results
+```
+t_eff = η² · (FWHM_fid / FWHM)² · (b_dark / b)
+```
 
-- Calibrated `t_eff` against the DES pipeline's `qc_teff` on 74,323 exposures: log-correlation 0.952, median error 15% (the paper's constants: 24%).
-- Fitted fiducial FWHM follows the atmospheric λ^-0.2 law.
-- Composite score on 615 real nights is stable under reweighting (Spearman ≥ 0.98 for most weight sets).
+A night's score is how much of its time became effective science seconds, combined with how evenly it filled the sky and how little time went to slews and overhead.
 
-## A finding
+![Calibrated effective exposure time against the DES pipeline's own value, on 74,323 exposures](../../assets/skai/teff_validation.png)
 
-**Simpson's paradox in scheduler logs.** Pooled across the survey, seeing appears to *improve* with airmass, which is physically backwards: the scheduler only points low when conditions are already good. Any reward trained on raw logs inherits that bias.
+## What held up
 
-Live dashboard with every figure: [shaincarrasco.github.io/skai-metrics](https://shaincarrasco.github.io/skai-metrics/).
+| Check | Result |
+| --- | --- |
+| My `t_eff` against the DES pipeline's `qc_teff`, 74,323 exposures | log-correlation 0.952, median error 15% (the published constants: 24%) |
+| Fitted fiducial seeing across the five filters | follows the atmospheric λ^-0.2 law |
+| Composite score on 615 real nights, under reweighting | ranking stable, Spearman ≥ 0.98 for most weight sets |
+
+![The whole survey footprint, graded by delivered depth](../../assets/skai/blur_skymap.png)
+
+## A finding: Simpson's paradox in scheduler logs
+
+Pooled across the survey, seeing appears to *improve* as the telescope points lower, which is physically backwards. The cause is selection: the scheduler only chose low pointings when conditions were already good. Split by night, the expected relationship comes back. Any reward learned from raw logs inherits that bias unless it controls for it.
+
+![Seeing against airmass: pooled, the trend is backwards; within each night it is not](../../assets/skai/blur_airmass.png)
+
+![The best and the worst night in the survey, exposure by exposure](../../assets/skai/best_worst_nights.png)
+
+## Data
+
+Every exposure the Dark Energy Survey took with DECam on the Víctor M. Blanco 4-metre telescope at Cerro Tololo, Chile, 2013–2019: 105,889 exposures across 615 scored nights. Analysis in Python with pandas and astropy.

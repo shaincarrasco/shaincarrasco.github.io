@@ -5,7 +5,12 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://shaincarrasco.github.io',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/og/') })],
+  redirects: {
+    '/climbintel': '/projects/climb-intel/',
+    '/roblox': '/projects/roblox-games/',
+  },
   vite: { plugins: [tailwindcss()] },
-  build: { inlineStylesheets: 'auto' },
+  build: { inlineStylesheets: 'always' },
+  trailingSlash: 'always',
 });

@@ -40,3 +40,15 @@ body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; font-
 .prose-custom th, .prose-custom td { border-bottom: 1px solid var(--color-rule); padding: 0.5rem 0.75rem; text-align: left; }
 .prose-custom th { color: var(--color-chalk-dim); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* Accessibility */
+.skip { position: absolute; left: -9999px; top: 8px; z-index: 50; background: var(--color-amber); color: var(--color-night); padding: 6px 12px; font-weight: 600; }
+.skip:focus { left: 8px; }
+:focus-visible { outline: 2px solid var(--color-amber); outline-offset: 3px; }
+main:focus { outline: none; }
+nav a[aria-current="page"] { color: var(--color-amber); }
+::selection { background: var(--color-amber); color: var(--color-night); }
+.prose-custom img { display: block; width: 100%; height: auto; border: 1px solid var(--color-rule); background: #fff; margin: 2rem 0 0.5rem; }
+.prose-custom p:has(> img) { max-width: none; }
+.prose-custom em { font-style: italic; }
+.prose-custom > :first-child { margin-top: 0; }

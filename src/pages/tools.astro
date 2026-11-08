@@ -4,7 +4,7 @@ import Row from '../components/Row.astro';
 import { getCollection } from 'astro:content';
 const tools = (await getCollection('projects')).filter(p => p.data.category === 'tools').sort((a,b)=>a.data.order-b.data.order);
 ---
-<Base title="Tools, Shain Carrasco" description="dowse, tripwire and catchup: small systems built from scratch with tests, a measured number and a write-up of the decisions.">
+<Base title="Tools" og="/og/tools.png" description="dowse, tripwire and catchup: small systems built from scratch with tests, a measured number and a write-up of the decisions.">
   <div class="mx-auto max-w-[1280px] px-5 py-20">
     <h1 class="h2 text-[48px] md:text-[72px]">Tools I build for my own setup</h1>
     <p class="mt-5 max-w-[720px] text-xl leading-[1.4]">Each is a small system built from scratch, dependency-free, with an oracle test against something I trust, a benchmark with the machine and method written down, and a review pass that tries to break it before release.</p>
