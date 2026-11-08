@@ -1,0 +1,39 @@
+---
+title: BrickVision
+tagline: Spread your LEGO bricks on the floor, take one photo, and get every piece counted, outlined on your photo, and sorted by color, shape, size and type.
+short: "Photograph a pile of LEGO and get every piece counted, named, and sorted."
+status: alpha
+visibility: private
+category: product
+stack: [Python, OpenCV, Mask R-CNN, Blender, LDraw, Rebrickable, FastAPI]
+metrics:
+  - { value: "95.7%", label: "pieces found (recall), synthetic scenes" }
+  - { value: "19,370", label: "LDraw parts browsable", kind: spec }
+  - { value: "1,760", label: "pieces in the eval set" }
+accent: amber
+order: 7
+year: 2026
+---
+
+## How it works
+
+1. The photo gets a quality check.
+2. Classical segmentation separates pieces from the floor: a floor color model, shadow trimming, seam cuts.
+3. Studs set the 8 mm scale.
+4. Footprint, stud pattern and a height cue identify the part; CIELAB/CIEDE2000 matching identifies the color.
+5. A calibrated confidence per piece decides whether it is confirmed automatically or goes to a two-second check tray.
+6. Only verified scans reach your inventory and exports (Rebrickable CSV, BrickLink wanted list).
+
+## Measured accuracy (synthetic, not real photos yet)
+
+| Metric | Value |
+| --- | --- |
+| Recall | 95.7% |
+| Precision | 91.5% |
+| Footprint right | 98.2% |
+| Exact part | 73.8% (top-3 95.1%) |
+| Color right | 86.4% |
+
+The main confusion is height: a brick seen from above looks like a plate. Real-photo numbers come after the calibration set is labelled. Runs on a Mac, used from the phone's browser on the same Wi-Fi.
+
+*Not affiliated with the LEGO Group. LEGO® is a trademark of the LEGO Group.*

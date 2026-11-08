@@ -1,0 +1,35 @@
+---
+title: HoopLab
+tagline: Free college basketball analytics. Rates every D-I team and player from ESPN play-by-play, publishes its own pregame predictions and grades them in public.
+short: "Free college basketball analytics: team and player ratings from play-by-play, with its own predictions graded in public."
+status: in-development
+visibility: private
+category: product
+stack: [Python, Next.js, Neon Postgres, GitHub Actions, TypeScript]
+metrics:
+  - { value: "10 min", label: "live refresh cadence in season", kind: spec }
+accent: amber
+order: 3
+year: 2026
+---
+
+## What it does
+
+Team and player ratings from ESPN's public play-by-play, a model report card that grades HoopLab's own frozen predictions (misses included), and community tools on top: one chat room per game, comments pinned to specific plays, scouting tags that roll up into team tendency profiles.
+
+## Features
+
+1. Takes on the tape — threads pinned to a play
+2. Live game chat
+3. Hype line — chat volume per minute under the win-probability curve
+4. Crowd vs model pick league
+5. Model report card — public calibration
+6. Leverage lineups — win probability added per five-man unit
+7. Rotation chaos index — entropy of a coach's lineup minutes
+8. Community scouting tags
+9. Venue edge
+10. Watchability score on the weekly calendar
+
+## How it runs
+
+GitHub Actions: a daily job at 09:17 UTC and a live job every 10 minutes in season, both driving a Python engine (parse, rate, predict) into Neon Postgres, read by a Next.js site. Raw ESPN responses are cached so every number is reproducible.

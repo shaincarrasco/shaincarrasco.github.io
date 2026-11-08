@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
+import { asset } from '../lib/images';
+import { STATUS_LABEL } from '../lib/status';
+interface Props { p: CollectionEntry<'projects'>; eager?: boolean }
+const { p, eager = false } = Astro.props;
+const d = p.data;
+const measured = d.metrics.filter((m) => m.kind === 'measured').slice(0, 2);
+const phone = d.device === 'phone';
+---
+<li class="border-b border-rule">
+  <article class="grid items-center gap-8 py-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-14">
+    <div>
+      <p class="text-[15px] text-chalk-dim">{STATUS_LABEL[d.status]}, {d.year}</p>
+      <h3 class="mt-2 text-[34px] font-extrabold leading-[1.02] tracking-[-0.03em] md:text-5xl">
+        <a href={`/projects/${p.id}/`} class="hover:text-amber">{d.title}</a>
+      </h3>
+      <p class="mt-4 max-w-[520px] text-lg leading-[1.4]">{d.short ?? d.tagline}</p>
+      {measured.length > 0 && (
+        <dl class="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+          {measured.map((m) => (
+            <div class="max-w-[220px]"><dt class="big text-[32px]">{m.value}</dt><dd class="mt-1 text-[15px] leading-snug text-chalk-dim">{m.label}</dd></div>
+          ))}
+        </dl>
+      )}
+      <div class="mt-6 flex flex-wrap gap-x-7 gap-y-2 text-[17px] font-semibold">
+        <a href={`/projects/${p.id}/`} class="link">Case study</a>
+        {d.live && <a href={d.live} class="link">Open it</a>}
+        {d.repo && <a href={d.repo} class="link">Code</a>}
+      </div>
+    </div>
+    {d.image && (
+      <a href={`/projects/${p.id}/`} class={phone ? 'flex justify-center border border-rule bg-night-2 py-8' : 'block'} tabindex="-1" aria-hidden="true">
+        <Image
+          src={asset(d.image)}
+          alt=""
+          widths={phone ? [240, 480] : [480, 720, 960, 1440]}
+          sizes={phone ? '240px' : '(min-width: 1024px) 700px, calc(100vw - 40px)'}
+          class={phone ? 'block h-auto w-[240px] border border-rule' : 'block h-auto w-full border border-rule'}
+          loading={eager ? 'eager' : 'lazy'}
+        />
+      </a>
+    )}
+  </article>
+</li>

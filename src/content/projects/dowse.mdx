@@ -1,0 +1,18 @@
+---
+title: dowse
+tagline: Hybrid keyword + vector search over seven Obsidian vaults, with an MCP server my AI agents query. Python, standard library only.
+short: "Search over my Obsidian vaults that my AI agents query over MCP. Python, standard library only."
+status: released
+visibility: private
+category: tools
+stack: [Python, stdlib only, BM25, local embeddings, MCP]
+metrics:
+  - { value: "0.917", label: "keyword recall@5 on 24 labelled queries" }
+  - { value: "1e-9", label: "BM25 agreement with rank_bm25" }
+  - { value: "96 s", label: "to embed 2,433 chunks on an M2" }
+accent: amber
+order: 20
+year: 2026
+---
+
+BM25 keyword ranking plus local embeddings, fused with reciprocal rank fusion. A crash-safe generational index. Agents reach it through `vault_search` over MCP. Oracle test: BM25 matches `rank_bm25` to 1e-9. v0.1.0.

@@ -1,0 +1,38 @@
+---
+import Base from '../layouts/Base.astro';
+import SkaiFeature from '../components/SkaiFeature.astro';
+---
+<Base
+  title="Research"
+  description="Summer 2026 at the SkAI Institute: a score for AI telescope schedulers, calibrated on 74,323 Dark Energy Survey exposures. Poster, working note, report, dashboard and write-up."
+  og="/og/research.png"
+  ogAlt="A report card for the night sky: SkAI Institute research by Shain Carrasco"
+>
+  <SkaiFeature headingLevel="h1" />
+  <section class="mx-auto max-w-[1280px] px-5 pb-16">
+    <h2 class="border-b border-rule pb-4 text-2xl font-semibold">What I built</h2>
+    <ul class="mt-6 grid max-w-[900px] gap-4 text-lg leading-[1.4]">
+      <li><b>The metric and its calibration.</b> Reconstructed effective exposure time from the raw quality columns of the DES log and fitted the per-band fiducial seeing and sky-brightness terms.</li>
+      <li><b>A Python toolkit, <code>skai_metrics</code>.</b> Modules for effective exposure time, blur, sky uniformity and per-night schedule scores, with validation tests that check the metric against the DES pipeline's own values.</li>
+      <li><b>The analysis.</b> Five notebooks: image quality, the blur metric, schedule evaluation, observing efficiency, and efficiency with weather gaps removed.</li>
+      <li><b>Everything you can see here.</b> The figures, the rotating survey globe, the dashboard, the report, the working note and the poster.</li>
+    </ul>
+  </section>
+  <section class="mx-auto max-w-[1280px] px-5">
+    <h2 class="border-b border-rule pb-4 text-2xl font-semibold">How the work is laid out</h2>
+    <ul class="mt-2 divide-y divide-rule">
+      {[
+        ['/projects/skai-metrics/', 'Write-up', 'The question, the metric, what held up, and the Simpson\'s paradox finding, in plain language.'],
+        ['/skai/report/', 'Full report', 'Every figure and table from the summer, with captions. Twelve figures.'],
+        ['/skai/dashboard/', 'Dashboard', 'Explore the survey night by night: scores, conditions, and progress over the footprint.'],
+        ['/skai/working-note-v0.1.pdf', 'Working note', 'The method, the calibration, the validation tests and the references. 15 pages, v0.1, July 2026.'],
+        ['/skai/poster.pdf', 'Poster', 'A Report Card for the Night Sky. PDF, 1.4 MB.'],
+      ].map(([href, name, what]) => (
+        <li><a href={href} class="row grid gap-2 py-6 md:grid-cols-[260px_1fr]">
+          <span class="row-title text-2xl font-semibold">{name}</span>
+          <span class="text-lg leading-[1.4]">{what}</span>
+        </a></li>
+      ))}
+    </ul>
+  </section>
+</Base>

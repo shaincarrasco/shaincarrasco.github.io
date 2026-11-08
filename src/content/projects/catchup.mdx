@@ -1,0 +1,18 @@
+---
+title: catchup
+tagline: A job scheduler for a laptop that sleeps. Every fire, run and miss goes into a crash-safe journal; after a sleep each job runs the missed work, skips it, or waits for approval.
+short: "A job scheduler for a laptop that sleeps, with a crash-safe journal of every fire, run and miss."
+status: released
+visibility: private
+category: tools
+stack: [Python, stdlib only]
+metrics:
+  - { value: "3/3", label: "scenarios matching an independent reference model" }
+  - { value: "1,337", label: "events over a simulated week" }
+  - { value: "0.02 s", label: "worst lag across 40 real runs" }
+accent: amber
+order: 22
+year: 2026
+---
+
+An fsynced, CRC-framed journal is the only state; a start gate means no job runs without a durable record. Jobs that place orders never retry or catch up on their own. Two weeks of missed fires handled in one 0.5 s tick. Four high-severity findings from a separate review fixed, each with a regression test. v0.1.0.

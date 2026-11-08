@@ -1,0 +1,29 @@
+---
+title: Upset
+tagline: Every fantasy matchup in your league as a live win probability, 1¢–99¢, and a free League Mode where league-mates call each other's games with play coins.
+short: "Every fantasy matchup in your league as a live win probability, priced 1¢ to 99¢. Play coins only."
+status: live
+visibility: public
+category: product
+repo: https://github.com/shaincarrasco/matchup
+live: https://shaincarrasco.github.io/matchup/
+stack: [TypeScript, Vite, React, Neon Functions, Sleeper API, ESPN scoreboard]
+metrics:
+  - { value: "10,000", label: "game-script simulations per matchup", kind: spec }
+  - { value: "1¢–99¢", label: "win probability as a price", kind: spec }
+accent: magenta
+order: 5
+year: 2026
+image: shots/upset.png
+imageAlt: "Upset: a fantasy matchup priced as a 57% chance to win, with buttons to buy each side."
+---
+
+## How the number is made
+
+Each real NFL game is simulated 10,000 times with total and spread drawn around the sportsbook line, so a QB and his receivers rise and fall together and a team protecting a lead runs more. Game scripts become player stat lines, league scoring turns them into P(win), margin, total and "what moves this."
+
+## Under the hood (private `matchup-market`)
+
+A monorepo: a seeded odds engine with calibration and backtest; an LMSR house market maker with a double-entry ledger in integer centicoins and idempotency keys; a Sleeper connector (username → leagues → rosters → matchups) plus ESPN lines and live stats; a Neon Function for the shared league board; and a Discord/GroupMe odds-posting bot (dry run by default).
+
+Play coins only. Not purchasable, not redeemable, no real-money bets.

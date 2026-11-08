@@ -1,0 +1,43 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../site';
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfilePage',
+  url: `${SITE.url}/about`,
+  mainEntity: { '@id': `${SITE.url}/#person`, '@type': 'Person', name: SITE.name, url: SITE.url, jobTitle: SITE.role, sameAs: [SITE.github, SITE.linkedin].filter(Boolean) },
+};
+const stack: [string, string][] = [
+  ['Languages', 'Python, TypeScript, JavaScript, Go, Luau, SQL, Swift'],
+  ['Data and ML', 'pandas, NumPy, scikit-learn, XGBoost, LightGBM, PyTorch, MediaPipe, OpenCV, astropy'],
+  ['Web', 'Flask, FastAPI, React, Next.js, Astro, Vite, Tailwind'],
+  ['Data stores', 'PostgreSQL, Neon, PostGIS, H3'],
+  ['Shipping', 'GitHub Actions, Railway, Vercel, Cloudflare, Playwright'],
+];
+---
+<Base title="About" description="Shain Carrasco is a software developer and researcher in Chicago: ML products, astronomy research at SkAI, sports analytics and Roblox games." og="/og/about.png" jsonLd={jsonLd} type="profile">
+  <div class="mx-auto grid max-w-[1280px] gap-16 px-5 py-20 lg:grid-cols-[minmax(0,1fr)_380px]">
+    <div>
+      <h1 class="h2 text-[48px] md:text-[80px]">About</h1>
+      <div class="prose-custom mt-10 text-[19px]">
+        <p>I'm Shain Carrasco, a software developer in Chicago. I study at DePaul University, and this summer I was a researcher at the NSF-Simons AI Institute for the Sky, building a reward for AI telescope schedulers on Dark Energy Survey data.</p>
+        <p>Most of what I build starts as something I want to exist. I climb, so I made <a href="/projects/climb-intel/">Climb Intel</a>, which had about 29,000 unique visitors in the last 30 days and now sells subscriptions. I watch college basketball, so I'm building <a href="/projects/hooplab/">HoopLab</a>. I make Roblox games with <a href="/projects/roblox-games/">a small Chicago studio</a>.</p>
+        <h2>How I work</h2>
+        <p>Every project gets a short spec with a cut line, saying what it will not do. It gets an oracle test against something I trust, a benchmark with the machine and method written down, and a review pass that tries to break it before release. If a number appears on this site, the project page says how it was measured.</p>
+        <p>I use Claude as a pair programmer. It writes much of the code from my specs; each README says how, and commits carry a co-author line.</p>
+      </div>
+    </div>
+    <aside class="lg:pt-6" aria-label="Details">
+      <h2 class="border-b border-rule pb-4 text-2xl font-semibold">Contact</h2>
+      <ul class="mt-4 flex flex-col gap-3 text-lg">
+        {SITE.email && <li><a href={`mailto:${SITE.email}`} class="link">{SITE.email}</a></li>}
+        <li><a href={SITE.github} class="link" rel="me">github.com/shaincarrasco</a></li>
+        {SITE.linkedin && <li><a href={SITE.linkedin} class="link" rel="me">LinkedIn</a></li>}
+      </ul>
+      <h2 class="mt-12 border-b border-rule pb-4 text-2xl font-semibold">What I use</h2>
+      <dl class="mt-4 flex flex-col gap-4 text-[17px] leading-snug">
+        {stack.map(([k, v]) => (<div><dt class="text-chalk-dim">{k}</dt><dd class="mt-1">{v}</dd></div>))}
+      </dl>
+    </aside>
+  </div>
+</Base>

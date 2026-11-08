@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+const updated = '8 November 2026';
+const groups: [string, [string, string][]][] = [
+  ['This month', [
+    ['HoopLab: launching for the 2026–27 college basketball season', '/projects/hooplab/'],
+    ['Climb Intel: better accuracy at V9 and above, where training data is scarce', '/projects/climb-intel/'],
+  ]],
+  ['Next', [
+    ['WildAtlas: final name and the first public globe with GBIF data', '/projects/wildatlas/'],
+    ['BrickVision: a real-photo calibration set and the first real-photo accuracy numbers', '/projects/brickvision/'],
+    ['Workbench: placesnap, conduit and tollgate', '/tools/'],
+    ['LipRead tested on a real iPhone and Android phone', '/projects/lipread/'],
+  ]],
+  ['Later', [
+    ['Slice, phase one', '/projects/slice/'],
+    ['Public releases of Scrap City, Be a Stone and Canopy Bureau', '/projects/roblox-games/'],
+  ]],
+];
+---
+<Base title="Now" description="What Shain Carrasco is building this month, and what comes next." og="/og/now.png">
+  <div class="mx-auto max-w-[1280px] px-5 py-20">
+    <h1 class="h2 text-[48px] md:text-[80px]">Now</h1>
+    <p class="mt-4 text-lg text-chalk-dim">What I'm working on. Updated {updated}.</p>
+    {groups.map(([label, items]) => (
+      <section class="mt-14">
+        <h2 class="border-b border-rule pb-4 text-2xl font-semibold">{label}</h2>
+        <ul>
+          {items.map(([text, href]) => (
+            <li class="border-b border-rule"><a href={href} class="row block py-5 text-xl leading-snug md:text-2xl"><span class="row-title">{text}</span></a></li>
+          ))}
+        </ul>
+      </section>
+    ))}
+  </div>
+</Base>

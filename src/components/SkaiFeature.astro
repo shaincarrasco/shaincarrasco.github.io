@@ -1,0 +1,55 @@
+---
+import { Image } from 'astro:assets';
+import { asset } from '../lib/images';
+interface Props { headingLevel?: 'h1' | 'h2' }
+const { headingLevel = 'h2' } = Astro.props;
+const H = headingLevel;
+const figures: [string, string][] = [
+  ['skai/blur_skymap.png', 'Median seeing across the survey footprint'],
+  ['skai/teff_validation.png', 'My effective exposure time against the DES pipeline, 74,323 exposures'],
+  ['skai/best_worst_nights.png', 'The best and the worst night, exposure by exposure'],
+  ['skai/blur_airmass.png', "Seeing against airmass, the Simpson's paradox"],
+];
+---
+<section id="skai" class="mx-auto max-w-[1280px] px-5 py-24" aria-labelledby="skai-title">
+  <H id="skai-title" class={`h2 ${H === 'h1' ? 'text-[48px] md:text-[80px]' : 'text-[40px] md:text-[56px]'}`}>Summer 2026 at the SkAI Institute</H>
+  <p class="mt-5 max-w-[860px] text-[20px] leading-[1.4] md:text-2xl">
+    An AI telescope scheduler needs a number that says how good a night of observing was. I built one, and tested it on
+    every exposure the Dark Energy Survey took from the Blanco 4-metre telescope at Cerro Tololo, Chile, between 2013 and
+    2019. Advised by Prof. Alex Drlica-Wagner, with Paul Chichura and Rachel Hur.
+  </p>
+
+  <div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,840px)_1fr]">
+    <a href="/skai/poster.pdf" class="group block border border-rule bg-poster">
+      <Image src={asset('skai/poster.png')} alt="Poster: A Report Card for the Night Sky. One score for how good a night of observing was, built on Dark Energy Survey exposures." widths={[640, 960, 1280, 1680]} sizes="(min-width: 1320px) 840px, (min-width: 1024px) 62vw, calc(100vw - 40px)" class="block h-auto w-full" loading={H === 'h1' ? 'eager' : 'lazy'} />
+      <span class="block px-5 py-3 text-[15px] text-[#cfe3ea] group-hover:text-white">The poster from my SkAI summer. Opens the PDF.</span>
+    </a>
+    <div class="flex flex-col gap-8">
+      <div><div class="big text-5xl">74,323</div><p class="mt-2 text-lg leading-snug">exposures scored, the clean survey sample from a 105,889-exposure DES log</p></div>
+      <div><div class="big text-5xl">0.952</div><p class="mt-2 text-lg leading-snug">log-correlation between my calibrated effective exposure time and the DES pipeline's own</p></div>
+      <div><div class="big text-5xl">615</div><p class="mt-2 text-lg leading-snug">nights scored; the ranking holds under reweighting for most weight sets (Spearman ≥ 0.98)</p></div>
+      <p class="text-lg leading-[1.4]">
+        One finding: pooled across the survey, seeing looks like it <em>improves</em> as the telescope points lower, which is
+        physically backwards. The scheduler preferentially pointed low when conditions were already good, so a reward learned
+        from raw logs inherits that bias.
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {figures.map(([src, cap]) => (
+      <figure class="border border-rule bg-night-2">
+        <Image src={asset(src)} alt={cap} widths={[320, 480, 640]} sizes="(min-width: 1024px) 300px, (min-width: 640px) 50vw, 100vw" class="block aspect-[4/3] h-auto w-full bg-white object-contain p-2" loading="lazy" />
+        <figcaption class="px-4 py-3 text-[15px] leading-snug text-chalk-dim">{cap}</figcaption>
+      </figure>
+    ))}
+  </div>
+
+  <div class="mt-8 flex flex-wrap gap-x-9 gap-y-3 text-lg font-semibold">
+    <a href="/projects/skai-metrics/" class="link">Read the write-up</a>
+    <a href="/skai/report/" class="link">Full report</a>
+    <a href="/skai/dashboard/" class="link">Interactive dashboard</a>
+    <a href="/skai/poster.pdf" class="link">Poster (PDF, 1.4 MB)</a>
+    <a href="/skai/working-note-v0.1.pdf" class="link">Working note (PDF, v0.1)</a>
+  </div>
+</section>

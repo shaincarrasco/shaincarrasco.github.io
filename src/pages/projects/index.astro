@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+import Row from '../../components/Row.astro';
+import { getCollection } from 'astro:content';
+const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const groups: [string, string, string?][] = [['product', 'Products'], ['research', 'Research', '/research/'], ['tools', 'Tools', '/tools/'], ['games', 'Games'], ['archive', 'Smaller and earlier projects']];
+---
+<Base title="Work" description="Every project Shain Carrasco has built since 2022, public and private, with the number each one was measured on." og="/og/work.png">
+  <div class="mx-auto max-w-[1280px] px-5 py-20">
+    <h1 class="h2 text-[48px] md:text-[72px]">Work</h1>
+    <p class="mt-4 max-w-[560px] text-lg text-chalk-dim">Public repos link to code. Private ones show the product and the measurements; ask me for the code.</p>
+    {groups.map(([key, label, more]) => { const items = all.filter((p) => p.data.category === key); return items.length ? (
+      <section class="mt-16">
+        <div class="flex items-baseline justify-between gap-4 border-b border-rule pb-4"><h2 class="text-2xl font-semibold">{label}</h2>{more && <a href={more} class="link text-[17px]">{key === 'tools' ? 'How the tools fit together' : 'The research in full'}</a>}</div>
+        <ol>{items.map((p) => <Row p={p} />)}</ol>
+      </section>) : null; })}
+  </div>
+</Base>

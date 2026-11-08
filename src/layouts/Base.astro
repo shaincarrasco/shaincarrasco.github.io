@@ -1,0 +1,97 @@
+---
+import '../styles/global.css';
+import { SITE } from '../site';
+import fontUrl from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Path of the 1200x630 social card, e.g. /og/home.png */
+  og?: string;
+  ogAlt?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  type?: 'website' | 'article' | 'profile';
+}
+
+const {
+  title,
+  description = SITE.description,
+  og = '/og/home.png',
+  ogAlt = `${SITE.name}: software developer and researcher in Chicago`,
+  jsonLd,
+  type = 'website',
+} = Astro.props;
+
+const fullTitle = title ? `${title} | ${SITE.name}` : `${SITE.name}, software developer in Chicago`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogUrl = new URL(og, Astro.site);
+const nav: [string, string][] = [['/projects/', 'Work'], ['/research/', 'Research'], ['/now/', 'Now'], ['/about/', 'About']];
+const current = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.name} />
+    <link rel="canonical" href={canonical} />
+    <link rel="preload" href={fontUrl} as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#07090c" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title ?? SITE.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={ogAlt} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title ?? SITE.name} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+    <meta name="twitter:image:alt" content={ogAlt} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title={SITE.name} href="/rss.xml" />
+    <link rel="me" href={SITE.github} />
+    {jsonLd && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen bg-night text-chalk">
+    <a href="#main" class="skip">Skip to content</a>
+    <header>
+      <div class="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-x-6 gap-y-2 px-5 pt-7 text-[17px] sm:text-lg">
+        <a href="/" class="whitespace-nowrap font-semibold hover:text-amber">{SITE.name}</a>
+        <nav aria-label="Main" class="flex gap-5 sm:gap-8">
+          {nav.map(([href, label]) => (
+            <a href={href} class="hover:text-amber" aria-current={current.startsWith(href) ? 'page' : undefined}>{label}</a>
+          ))}
+          <a href={SITE.github} class="hidden hover:text-amber sm:inline" rel="me">GitHub</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main" tabindex="-1"><slot /></main>
+    <footer class="mt-24 border-t border-rule">
+      <div class="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-4 px-5 py-10 text-[15px] text-chalk-dim">
+        <span>{SITE.name}, {SITE.location}, {new Date().getFullYear()}</span>
+        <div class="flex flex-wrap gap-6">
+          {SITE.email && <a href={`mailto:${SITE.email}`} class="hover:text-chalk">Email</a>}
+          <a href={SITE.github} class="hover:text-chalk" rel="me">GitHub</a>
+          {SITE.linkedin && <a href={SITE.linkedin} class="hover:text-chalk" rel="me">LinkedIn</a>}
+          <a href="https://climbintel.com" class="hover:text-chalk">Climb Intel</a>
+          <a href="/rss.xml" class="hover:text-chalk">RSS</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
