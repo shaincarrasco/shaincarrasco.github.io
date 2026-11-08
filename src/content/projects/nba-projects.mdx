@@ -1,0 +1,20 @@
+---
+title: NBA analytics trio
+tagline: Three self-contained NBA × tech apps — Film Room jumpshot analyzer, Tactical Board lineup intelligence, NBA//DESK game predictor — each with its own visual identity.
+status: live
+visibility: public
+category: product
+repo: https://github.com/shaincarrasco/coolbasketballstuff
+stack: [Python, OpenCV, MediaPipe, PyTorch, pandas, scikit-learn, XGBoost]
+metrics:
+  - { value: "3", label: "apps, each an offline interactive report" }
+  - { value: "C(n,5)", label: "lineups scored by the Tactical Board" }
+accent: magenta
+order: 8
+---
+
+- **Film Room** — pose-track your jumper, frame scrubber with ghost reference, mechanics radar, drill-based coaching plan.
+- **Tactical Board** — tap-to-build lineup picker scored over every five-man combination, pairwise synergy heatmap, what-if swaps and trade scenarios, three-model lab.
+- **NBA//DESK** — leak-free rolling form + Elo → calibrated win probabilities; slate picker, power rankings, Monte Carlo playoff odds, upset detector.
+
+Runs offline on realistic sample data; an optional `nba_api` loader pulls real data. Each demo writes a self-contained `report.html` with no CDN.

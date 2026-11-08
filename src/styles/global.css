@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #0a0a0f;
+  --color-surface: #12121a;
+  --color-surface-2: #1a1a25;
+  --color-line: #262633;
+  --color-text: #f4f4f5;
+  --color-muted: #9a9aa8;
+  --color-lime: #c6ff3d;
+  --color-cyan: #38e8ff;
+  --color-magenta: #ff3dcb;
+  --color-amber: #ffb43d;
+  --font-display: "Inter Tight", "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html { background: var(--color-bg); color: var(--color-text); scroll-behavior: smooth; }
+body { font-family: var(--font-display); -webkit-font-smoothing: antialiased; }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.glow-lime { text-shadow: 0 0 24px color-mix(in oklab, var(--color-lime) 55%, transparent); }
+.glow-cyan { text-shadow: 0 0 24px color-mix(in oklab, var(--color-cyan) 55%, transparent); }
+.glow-magenta { text-shadow: 0 0 24px color-mix(in oklab, var(--color-magenta) 55%, transparent); }
+.glow-amber { text-shadow: 0 0 24px color-mix(in oklab, var(--color-amber) 55%, transparent); }
+.grid-bg {
+  background-image: linear-gradient(to right, #ffffff08 1px, transparent 1px), linear-gradient(to bottom, #ffffff08 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }

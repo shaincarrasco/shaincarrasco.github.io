@@ -1,0 +1,37 @@
+---
+title: SkAI telescope-scheduler metrics
+tagline: Evaluation metrics and rewards for AI telescope schedulers, built and validated on 105,890 real Dark Energy Survey exposures. SkAI Institute, summer 2026.
+status: research
+visibility: private
+category: research
+live: https://shaincarrasco.github.io/skai-metrics/
+stack: [Python, pandas, astropy, matplotlib, Jupyter]
+metrics:
+  - { value: "105,890", label: "DES exposures analyzed" }
+  - { value: "0.952", label: "log-correlation with the DES pipeline" }
+  - { value: "615", label: "real survey nights scored" }
+accent: cyan
+image: /img/skai.png
+order: 2
+featured: true
+---
+
+## The question
+
+An AI telescope scheduler picks what to point at next. To train or judge one you need a number that says how good a night of observing was. Clock time is not enough: 90 seconds through bad seeing, clouds or a bright sky is worth less science than the same 90 seconds on a perfect night.
+
+## The metric
+
+Effective exposure time discounts each exposure by its conditions: `t_eff = η² · (FWHM_fid / FWHM)² · (b_dark / b)`. A schedule's yield is how much of the night it turns into effective science seconds. Image-quality and sky-coverage sub-scores combine into one composite per night.
+
+## Results
+
+- Calibrated `t_eff` against the DES pipeline's `qc_teff` on 74,323 exposures: log-correlation 0.952, median error 15% (the paper's constants: 24%).
+- Fitted fiducial FWHM follows the atmospheric λ^-0.2 law.
+- Composite score on 615 real nights is stable under reweighting (Spearman ≥ 0.98 for most weight sets).
+
+## A finding
+
+**Simpson's paradox in scheduler logs.** Pooled across the survey, seeing appears to *improve* with airmass, which is physically backwards: the scheduler only points low when conditions are already good. Any reward trained on raw logs inherits that bias.
+
+Live dashboard with every figure: [shaincarrasco.github.io/skai-metrics](https://shaincarrasco.github.io/skai-metrics/).

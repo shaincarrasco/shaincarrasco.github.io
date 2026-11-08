@@ -1,0 +1,16 @@
+---
+title: tripwire
+tagline: Secret scanner in Go for files, file and folder names, git history and staged changes, plus a filter other tools pipe text through before it leaves the machine.
+status: live
+visibility: private
+category: tools
+stack: [Go, stdlib only, pre-commit hook]
+metrics:
+  - { value: "139/139", label: "planted secrets found, 0 false alarms" }
+  - { value: "44 MB/s", label: "on Go's 97 MB source tree" }
+  - { value: "20", label: "credential formats" }
+accent: amber
+order: 21
+---
+
+Fail-closed pre-commit hook, `scan --stdin` for piping, `scan --redact` for logs. 0 false alarms on 149 real files. A 3.9× speedup came from keyword-windowed regex. v0.1.0.

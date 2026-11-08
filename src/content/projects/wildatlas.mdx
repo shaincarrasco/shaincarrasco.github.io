@@ -1,0 +1,24 @@
+---
+title: WildAtlas
+tagline: A living 3D globe of life on Earth. Zoom from space to your backyard and see every biome, forest type and species, plus expedition findings mined from research papers.
+status: in-development
+visibility: private
+category: product
+live: https://wildatlas-three.vercel.app
+stack: [TypeScript, MapLibre GL, Next.js, Neon Postgres + PostGIS, H3, pnpm monorepo, Playwright]
+metrics:
+  - { value: "1,000", label: "step build plan across 10 phases" }
+  - { value: "4", label: "paper corpora mined: OpenAlex, PMC, Plazi, BHL" }
+accent: cyan
+order: 4
+---
+
+## The big pieces
+
+1. **The globe** — MapLibre GL JS globe with 3D terrain, dark-neon style, land cover, forest types, biomes from PMTiles.
+2. **The data** — GBIF and iNaturalist occurrences, IUCN threat status and climate niches, aggregated to H3 hexes in Neon Postgres/PostGIS.
+3. **The papers** — OpenAlex, PMC, Plazi and BHL mined for species, places and expedition findings; every pin links to its source.
+4. **The people** — profiles, life lists, video sightings that feed the map, endangered watchlists.
+5. **The mission** — geoprivacy for sensitive species, data shared back to GBIF, recovery and rediscovery signals.
+
+Built with a collaborator on a 10-phase plan with architecture decision records, a data-source license register, and Playwright smoke tests against live data. Working codename; final name pending.

@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+interface Props { title: string; description: string; image?: string; }
+const { title, description, image = '/img/og-default.png' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const nav = [
+  ['/projects', 'Work'], ['/climbintel', 'Climb Intel'], ['/tools', 'Tools'], ['/roblox', 'Games'], ['/now', 'Now'], ['/about', 'About'],
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="alternate" type="application/rss+xml" title="Shain Carrasco" href="/rss.xml" />
+    <slot name="head" />
+  </head>
+  <body class="min-h-screen bg-bg text-text">
+    <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:bg-lime focus:text-bg focus:px-3 focus:py-1">Skip to content</a>
+    <header class="sticky top-0 z-40 border-b border-line/60 bg-bg/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
+        <a href="/" class="font-semibold tracking-tight">shain<span class="text-lime">.</span>carrasco</a>
+        <nav class="hidden gap-6 text-sm text-muted md:flex">
+          {nav.map(([href, label]) => <a href={href} class="hover:text-text transition-colors">{label}</a>)}
+        </nav>
+        <a href="https://github.com/shaincarrasco" class="text-sm text-muted hover:text-text" rel="me">GitHub ↗</a>
+      </div>
+    </header>
+    <main id="main"><slot /></main>
+    <footer class="mt-24 border-t border-line/60">
+      <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-5 py-10 text-sm text-muted">
+        <span>© {new Date().getFullYear()} Shain Carrasco · Chicago</span>
+        <div class="flex gap-5">
+          <a href="https://github.com/shaincarrasco" class="hover:text-text">GitHub</a>
+          <a href="https://climbintel.com" class="hover:text-text">Climb Intel</a>
+          <a href="/rss.xml" class="hover:text-text">RSS</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

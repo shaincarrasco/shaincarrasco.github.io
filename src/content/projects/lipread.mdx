@@ -1,0 +1,23 @@
+---
+title: LipRead
+tagline: Read the lips in a video, right on your phone. Built for sports clips — see what a coach, a player or a referee appears to say.
+status: alpha
+visibility: public
+category: product
+repo: https://github.com/shaincarrasco/lipread
+live: https://shaincarrasco.github.io/lipread/
+stack: [Python, PyTorch, ONNX in the browser, PWA]
+metrics:
+  - { value: "203 MB", label: "on-device model, downloaded once" }
+  - { value: "0", label: "video frames leave the phone" }
+accent: cyan
+order: 6
+---
+
+## What it does
+
+Open the link, add it to your home screen, pick or record a clip. The model runs in the browser; reading starts immediately and shows progress. Type the names you expect (players, coaches) and the app checks for them.
+
+## Status
+
+Pre-release. The phone app has been checked in desktop Chromium at phone size; real-iPhone and Android testing is next. A desktop app (v0.1) has measured results in the repo's `eval/`. Ships with `ETHICS.md`, `PRIVACY.md` and model licenses.

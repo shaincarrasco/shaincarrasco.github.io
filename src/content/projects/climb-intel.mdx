@@ -1,0 +1,35 @@
+---
+title: Climb Intel
+tagline: AI that grades Kilter Board routes, predicts how hard a climb feels for your body, and coaches your movement from phone video. Live, full-stack, built solo.
+status: live
+visibility: private
+category: product
+live: https://climbintel.com
+stack: [Python, Flask, PostgreSQL, XGBoost, LightGBM, MediaPipe, PWA, Stripe, Railway]
+metrics:
+  - { value: "137K", label: "graded routes in training" }
+  - { value: "72.8%", label: "within ±1 V-grade, frozen holdout" }
+  - { value: "29.2K", label: "unique visitors / 30 days (Cloudflare)" }
+accent: lime
+image: /img/climbintel.jpg
+order: 1
+featured: true
+---
+
+## What it is
+
+The official Kilter Board app knows hundreds of thousands of routes but nothing about *you*. Climb Intel grades routes with machine learning, personalizes difficulty to your height, wingspan and reach, analyzes climbing videos for movement coaching, and finds the routes that will actually move you forward.
+
+## How the grade is made
+
+A stacked **XGBoost + LightGBM → meta-learner → isotonic calibration** ensemble, trained on ~137,000 graded routes. On a frozen, leakage-free holdout: 72.8% within ±1 V-grade, ~90% within ±2, ~29% exact. Strongest at V4–V6; V9+ is the open problem because data is scarce at the top.
+
+## Video coaching
+
+Upload a phone clip. MediaPipe extracts 17 body joints per frame; each move gets feedback on tension, hip angle, reach and footwork, benchmarked against per-grade medians.
+
+## The product
+
+~24 pages in a vanilla-JS PWA behind a Flask API with 13 blueprints (auth, social, routes, predict, pose, billing…) and a PostgreSQL pool. Real accounts with bcrypt + Google OAuth, Stripe-ready billing, offline-capable, installable. Push to `main` and Railway redeploys climbintel.com.
+
+Full system design: [climbintel.com/architecture.html](https://climbintel.com/architecture.html). Dedicated page: [/climbintel](/climbintel).
