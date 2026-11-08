@@ -1,0 +1,55 @@
+/* Brings the original SkAI dashboard and report into the portfolio's look.
+   The original files are unchanged apart from this stylesheet and the site bar. */
+@font-face {
+  font-family: "Bricolage Site";
+  src: url("/fonts/bricolage-opsz.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+:root {
+  color-scheme: dark;
+  --surface: #0f1419;
+  --page: #07090c;
+  --ink: #f2ead9;
+  --ink2: #d9d1c0;
+  --muted: #a79c88;
+  --hair: #1c242c;
+  --accent: #e3a33c;
+  --radius: 3px;
+}
+html, body { background: #07090c !important; color: #f2ead9 !important; }
+body { font-family: "Bricolage Site", system-ui, sans-serif !important; overflow-x: hidden; }
+a { color: #f2ead9; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+a:hover { color: #e3a33c; }
+:focus-visible { outline: 2px solid #e3a33c; outline-offset: 3px; }
+
+.sitebar { border-bottom: 1px solid #1c242c; background: #07090c; position: relative; z-index: 60; }
+.sitebar-inner { max-width: 1100px; margin: 0 auto; padding: 18px 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 17px; }
+.sitebar a { text-decoration: none; }
+.sitebar .home { font-weight: 600; }
+
+/* Dashboard */
+.kicker { text-transform: none !important; letter-spacing: 0 !important; font-size: 15px !important; color: #a79c88 !important; }
+.phase-chip { border-radius: 3px !important; }
+.topnav { top: 0; }
+
+.nav-links { white-space: nowrap; }
+.table-wrap, .card { max-width: 100%; overflow-x: auto; }
+.stat-grid > * { box-shadow: none !important; }
+
+/* Report */
+body.report { max-width: 46em; line-height: 1.6; font-size: 17px; }
+body.report h1 { font-size: 2.2em; font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
+body.report h2 { font-size: 1.4em; font-weight: 700; letter-spacing: -0.02em; }
+body.report h2::before, body.report h3::before { content: none !important; }
+body.report table { display: block; max-width: 100%; overflow-x: auto; }
+body.report th { background: #0f1419 !important; }
+body.report th, body.report td, body.report hr { border-color: #1c242c !important; }
+body.report img { background: #fff; border-color: #1c242c !important; }
+body.report .cap { color: #a79c88 !important; }
+body.report tt, body.report code { background: #0f1419 !important; }
+.nav-links { min-width: 0; }
+.nav-inner { min-width: 0; overflow: hidden; }
+main table { display: block; max-width: 100%; overflow-x: auto; }
+.nights-cols { grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)) !important; }
+.nights-cols > *, [class*="grid"] > * { min-width: 0; }

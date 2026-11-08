@@ -4,11 +4,13 @@ import { getCollection } from 'astro:content';
 import stats from '../data/stats.json';
 import SkaiFeature from '../components/SkaiFeature.astro';
 import Row from '../components/Row.astro';
+import Feature from '../components/Feature.astro';
 import { SITE } from '../site';
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const rows = all.filter((p) => p.data.category !== 'archive');
-const earlier = all.filter((p) => p.data.category === 'archive');
+const FEATURED = ['climb-intel', 'upset', 'wildatlas', 'lipread'];
+const featured = FEATURED.map((id) => all.find((p) => p.id === id)!).filter(Boolean);
+const rows = all.filter((p) => !FEATURED.includes(p.id) && p.id !== 'skai-metrics' && p.data.status !== 'planning' && p.data.category !== 'archive');
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
@@ -33,9 +35,9 @@ const jsonLd = {
     <div>
       <h1 class="display text-[clamp(72px,11vw,152px)]">Shain<br />Carrasco</h1>
       <p class="mt-10 max-w-[560px] text-[22px] leading-[1.4] md:text-2xl">
-        Software developer and student in Chicago. This summer I was a researcher at the SkAI Institute, scoring telescope
-        schedules on 105,889 Dark Energy Survey exposures. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
-        used by about {stats.climbintel.uniques30dLong} people a month, and build college basketball analytics, a 3D globe of
+        Software developer and student in Chicago. This summer I was a researcher at the SkAI Institute, building a score
+        for how good a night of telescope observing was, tested on Dark Energy Survey data. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
+        which had {stats.climbintel.uniques30dLong} unique visitors in the last 30 days, and build college basketball analytics, a 3D globe of
         life on Earth, and Roblox games.
       </p>
     </div>
@@ -59,19 +61,18 @@ const jsonLd = {
   </script>
   <SkaiFeature />
 
-  <!-- Work logbook -->
-  <section id="work" class="mx-auto max-w-[1280px] px-5 py-24">
+  <!-- Work -->
+  <section id="work" class="mx-auto max-w-[1280px] px-5 py-24" aria-labelledby="work-title">
     <div class="flex flex-wrap items-end justify-between gap-6 border-b border-rule pb-7">
-      <h2 class="h2 text-[40px] md:text-[56px]">Work</h2>
+      <h2 id="work-title" class="h2 text-[40px] md:text-[56px]">Selected work</h2>
       <p class="max-w-[420px] text-[15px] leading-snug text-chalk-dim md:text-right">
-        Everything since 2022. Each number was measured; the project page says how. Private repos show the product, not the code.
+        Numbers come from each project's own tests, evaluations or analytics; the case study says how.
       </p>
     </div>
+    <ol>{featured.map((p, i) => <Feature p={p} eager={i === 0} />)}</ol>
+
+    <h2 class="mt-24 border-b border-rule pb-5 text-3xl font-semibold tracking-[-0.02em]">More projects</h2>
     <ol>{rows.map((p) => <Row p={p} />)}</ol>
-    {earlier.length > 0 && (
-      <p class="mt-8 text-[15px] text-chalk-dim">
-        Earlier: {earlier.map((p, i) => (<><a href={p.data.repo ?? `/projects/${p.id}/`} class="link">{p.data.title}</a>{i < earlier.length - 1 ? ', ' : ''}</>))}
-      </p>
-    )}
+    <p class="mt-8 text-[17px]"><a href="/projects/" class="link">Everything, including planning-stage and earlier projects</a></p>
   </section>
 </Base>

@@ -5,7 +5,7 @@ import { renderCard, type Card } from '../../lib/og';
 const pages: Record<string, Card> = {
   home: { title: 'Shain Carrasco', line: 'Software developer in Chicago. SkAI telescope research, Climb Intel, basketball analytics, a globe of life on Earth, Roblox games.', image: 'skai/des-globe-poster.webp' },
   work: { title: 'Work', line: 'Every project since 2022, with the number each one was measured on.' },
-  research: { kicker: 'SkAI Institute, summer 2026', title: 'Grading a night in one number', line: 'A reward for AI telescope schedulers, tested on 105,889 Dark Energy Survey exposures.', image: 'skai/poster.png' },
+  research: { kicker: 'SkAI Institute, summer 2026', title: 'A report card for the night sky', line: 'A score for AI telescope schedulers, calibrated on 74,323 Dark Energy Survey exposures.', image: 'skai/poster.png' },
   now: { title: 'Now', line: 'What I am building this month, and what comes next.' },
   about: { title: 'About', line: 'Software developer and researcher in Chicago.' },
   tools: { title: 'Tools', line: 'dowse, tripwire and catchup: small systems, tested and benchmarked.' },

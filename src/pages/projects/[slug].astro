@@ -4,6 +4,7 @@ import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { SITE } from '../../site';
 import { Image } from 'astro:assets';
 import { asset } from '../../lib/images';
+import { STATUS_LABEL } from '../../lib/status';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -14,12 +15,12 @@ const { p } = Astro.props as { p: CollectionEntry<'projects'> };
 const d = p.data;
 const { Content } = await render(p);
 
-const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+const all = (await getCollection('projects')).filter((x) => x.data.category !== 'archive' || x.id === p.id).sort((a, b) => a.data.order - b.data.order);
 const i = all.findIndex((x) => x.id === p.id);
 const prev = all[(i - 1 + all.length) % all.length];
 const next = all[(i + 1) % all.length];
 
-const statusLabel = { live: 'Live', research: 'Published', 'in-development': 'Building', alpha: 'Alpha', planning: 'Planning', archived: 'Earlier' }[d.status];
+const statusLabel = STATUS_LABEL[d.status];
 const internal = d.live?.startsWith('/');
 const liveLabel = !d.live ? null : internal ? 'Open the dashboard' : `Open ${new URL(d.live).host.replace(/^www\./, '')}`;
 
@@ -27,7 +28,7 @@ const url = new URL(`/projects/${p.id}/`, Astro.site).toString();
 const author = { '@type': 'Person', name: SITE.name, url: SITE.url };
 const jsonLd =
   d.category === 'research'
-    ? { '@context': 'https://schema.org', '@type': 'ScholarlyArticle', headline: d.title, description: d.tagline, author, datePublished: `${d.year}`, url, image: new URL(`/og/project-${p.id}.png`, Astro.site).toString() }
+    ? { '@context': 'https://schema.org', '@type': 'ScholarlyArticle', headline: d.title, description: d.tagline, author, dateCreated: `${d.year}`, url, image: new URL(`/og/project-${p.id}.png`, Astro.site).toString() }
     : d.live && !internal
       ? { '@context': 'https://schema.org', '@type': 'SoftwareApplication', name: d.title, description: d.tagline, applicationCategory: 'WebApplication', operatingSystem: 'Any', url: d.live, author, sameAs: d.repo }
       : d.repo

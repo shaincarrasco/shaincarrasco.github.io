@@ -1,6 +1,6 @@
 ---
 title: Climb Intel
-tagline: AI that grades Kilter Board routes, predicts how hard a climb feels for your body, and coaches your movement from phone video. Live, full-stack, built solo.
+tagline: A web app that grades Kilter Board routes, predicts how hard a climb will feel for your body, and coaches your movement from phone video. Live, with paid subscriptions.
 short: "Grades Kilter Board routes and predicts how hard a climb will feel for your body. Video coaching from phone clips."
 status: live
 visibility: private
@@ -8,9 +8,9 @@ category: product
 live: https://climbintel.com
 stack: [Python, Flask, PostgreSQL, XGBoost, LightGBM, MediaPipe, PWA, Stripe, Railway]
 metrics:
-  - { value: "869K", label: "training rows from about 137,000 graded Kilter routes" }
-  - { value: "72.8%", label: "within ±1 V-grade, frozen holdout" }
-  - { value: "29.2K", label: "unique visitors / 30 days (Cloudflare)" }
+  - { value: "72.8%", label: "of held-out climbs graded within one V-grade" }
+  - { value: "137K", label: "graded Kilter routes in training" }
+  - { value: "29.2K", label: "unique visitors in 30 days to 8 Nov 2026 (Cloudflare)" }
 accent: lime
 order: 1
 year: 2026
@@ -20,11 +20,11 @@ imageAlt: "The Climb Intel home page: a climber on a Kilter Board beside the gra
 
 ## What it is
 
-The official Kilter Board app knows hundreds of thousands of routes but nothing about *you*. Climb Intel grades routes with machine learning, personalizes difficulty to your height, wingspan and reach, analyzes climbing videos for movement coaching, and finds the routes that will actually move you forward.
+The official Kilter Board app knows hundreds of thousands of routes but nothing about *you*. Climb Intel grades routes with machine learning, adjusts difficulty for your height, wingspan and reach, analyzes climbing videos for movement coaching, and recommends routes near your limit.
 
 ## How the grade is made
 
-A stacked **XGBoost + LightGBM → meta-learner → isotonic calibration** ensemble. It trains on about 869,000 rows built from roughly 137,000 graded Kilter routes; the rows include mirrored copies of some harder climbs, so the larger number is not a count of unique problems. On a frozen, leakage-free holdout: 72.8% within ±1 V-grade, ~90% within ±2, ~29% exact. Strongest at V4–V6; V9+ is the open problem because data is scarce at the top.
+A stacked **XGBoost + LightGBM → meta-learner → isotonic calibration** ensemble, trained on about 137,000 graded Kilter routes. On a frozen, leakage-free holdout: 72.8% within ±1 V-grade, ~90% within ±2, ~29% exact. Strongest at V4–V6; V9+ is the open problem because data is scarce at the top.
 
 ## Video coaching
 
@@ -32,6 +32,6 @@ Upload a phone clip. MediaPipe extracts 17 body joints per frame; each move gets
 
 ## The product
 
-~24 pages in a vanilla-JS PWA behind a Flask API with 13 blueprints (auth, social, routes, predict, pose, billing…) and a PostgreSQL pool. Real accounts with bcrypt + Google OAuth, Stripe-ready billing, offline-capable, installable. Push to `main` and Railway redeploys climbintel.com.
+~24 pages in a vanilla-JS PWA behind a Flask API with 13 blueprints (auth, social, routes, predict, pose, billing…) and a PostgreSQL pool. Real accounts with bcrypt and Google OAuth, paid subscriptions through Stripe (Climber Pro, $4.99 a month or $49.99 a year, with a 7-day trial), offline-capable, installable. Push to `main` and Railway redeploys climbintel.com.
 
 Full system design: [climbintel.com/architecture.html](https://climbintel.com/architecture.html).

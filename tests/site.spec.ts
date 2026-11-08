@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const projects = fs.readdirSync('src/content/projects').map((f) => f.replace(/\.mdx$/, ''));
 const pages = ['/', '/projects/', '/research/', '/now/', '/about/', '/tools/', ...projects.map((p) => `/projects/${p}/`)];
-const shotPages = new Set(['/', '/projects/', '/research/', '/now/', '/about/', '/tools/', '/projects/climb-intel/', '/projects/skai-metrics/', '/projects/lipread/']);
+const shotPages = new Set(['/', '/projects/upset/', '/projects/', '/research/', '/now/', '/about/', '/tools/', '/projects/climb-intel/', '/projects/skai-metrics/', '/projects/lipread/']);
 
 for (const p of pages) {
   test(`${p}: renders, links resolve, metadata complete, accessible`, async ({ page }, info) => {
@@ -77,6 +77,13 @@ test('SkAI dashboard, report and poster are self-hosted', async ({ page, request
   await page.goto('/skai/dashboard/');
   await page.waitForTimeout(500);
   expect(errors).toEqual([]);
+  for (const u of ['/skai/dashboard/', '/skai/report/']) {
+    await page.goto(u);
+    await expect(page.locator('.sitebar a[href="/research/"]')).toHaveCount(1);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow, `${u} horizontal overflow`).toBeLessThanOrEqual(1);
+    await page.screenshot({ path: `screenshots/${test.info().project.name}/skai_${u.split('/')[2]}.png`, fullPage: false });
+  }
   await page.goto('/skai/report/');
   for (const img of await page.locator('img').all()) {
     const src = await img.getAttribute('src');
