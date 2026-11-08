@@ -1,18 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ProjectCard from '../../components/ProjectCard.astro';
+import Row from '../../components/Row.astro';
 import { getCollection } from 'astro:content';
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const groups: [string, string][] = [['product', 'Products'], ['research', 'Research'], ['tools', 'Tools'], ['games', 'Games'], ['archive', 'Earlier']];
 ---
-<Base title="Work — Shain Carrasco" description="Every project, public and private, with the numbers behind it.">
-  <div class="mx-auto max-w-6xl px-5 py-16">
-    <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Work</h1>
-    <p class="mt-3 max-w-2xl text-muted">Public repos link to code. Private ones show the product and the measurements; ask me for the code.</p>
+<Base title="Work, Shain Carrasco" description="Every project, public and private, with the numbers behind it.">
+  <div class="mx-auto max-w-[1280px] px-5 py-20">
+    <h1 class="h2 text-[48px] md:text-[72px]">Work</h1>
+    <p class="mt-4 max-w-[560px] text-lg text-chalk-dim">Public repos link to code. Private ones show the product and the measurements; ask me for the code.</p>
     {groups.map(([key, label]) => { const items = all.filter((p) => p.data.category === key); return items.length ? (
-      <section class="mt-14">
-        <h2 class="mb-5 text-sm uppercase tracking-[0.2em] text-muted">{label}</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{items.map((p) => <ProjectCard project={p} />)}</div>
+      <section class="mt-16">
+        <h2 class="border-b border-rule pb-4 text-2xl font-semibold">{label}</h2>
+        <ol>{items.map((p) => <Row p={p} />)}</ol>
       </section>) : null; })}
   </div>
 </Base>

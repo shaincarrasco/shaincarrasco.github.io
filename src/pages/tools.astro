@@ -1,17 +1,16 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import Row from '../components/Row.astro';
 import { getCollection } from 'astro:content';
 const tools = (await getCollection('projects')).filter(p => p.data.category === 'tools').sort((a,b)=>a.data.order-b.data.order);
 ---
-<Base title="Tools — Shain Carrasco" description="dowse, tripwire and catchup: small systems built from scratch with tests, a measured number and a write-up of the decisions.">
-  <div class="mx-auto max-w-6xl px-5 py-16">
-    <p class="text-sm uppercase tracking-[0.2em] text-amber">Workbench</p>
-    <h1 class="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">Tools I build for my own setup</h1>
-    <p class="mt-4 max-w-2xl text-muted">Each is a small system built from scratch, dependency-free, with an oracle test against something I trust, a benchmark with the machine and method written down, and a review pass that tries to break it before release.</p>
-    <div class="mt-10 grid gap-4 md:grid-cols-3">{tools.map(p => <ProjectCard project={p} />)}</div>
-    <h2 class="mt-16 text-2xl font-semibold tracking-tight">How they fit together</h2>
-    <p class="mt-3 max-w-2xl text-muted">catchup runs the dowse index hourly and a tripwire scan nightly, and pipes job logs through <code class="num text-sm">scan --redact</code>. dowse serves <code class="num text-sm">vault_search</code> to my Claude agents over MCP. Each writes a status file that the planned live-wire dashboard reads.</p>
-    <p class="mt-3 max-w-2xl text-muted">Next: <b class="text-text">placesnap</b> (deduplicated snapshots of Roblox place files), <b class="text-text">conduit</b> (a small MCP server framework) and <b class="text-text">tollgate</b> (an LLM gateway that filters prompts through tripwire).</p>
+<Base title="Tools, Shain Carrasco" description="dowse, tripwire and catchup: small systems built from scratch with tests, a measured number and a write-up of the decisions.">
+  <div class="mx-auto max-w-[1280px] px-5 py-20">
+    <h1 class="h2 text-[48px] md:text-[72px]">Tools I build for my own setup</h1>
+    <p class="mt-5 max-w-[720px] text-xl leading-[1.4]">Each is a small system built from scratch, dependency-free, with an oracle test against something I trust, a benchmark with the machine and method written down, and a review pass that tries to break it before release.</p>
+    <ol class="mt-12 border-t border-rule">{tools.map(p => <Row p={p} />)}</ol>
+    <h2 class="mt-16 text-2xl font-semibold">How they fit together</h2>
+    <p class="mt-3 max-w-[720px] text-lg leading-[1.4]">catchup runs the dowse index hourly and a tripwire scan nightly, and pipes job logs through <code>scan --redact</code>. dowse serves <code>vault_search</code> to my Claude agents over MCP. Each writes a status file that the planned live-wire dashboard reads.</p>
+    <p class="mt-3 max-w-[720px] text-lg leading-[1.4]">Next: placesnap (deduplicated snapshots of Roblox place files), conduit (a small MCP server framework) and tollgate (an LLM gateway that filters prompts through tripwire).</p>
   </div>
 </Base>

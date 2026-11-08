@@ -1,0 +1,18 @@
+---
+import type { CollectionEntry } from 'astro:content';
+interface Props { p: CollectionEntry<'projects'> }
+const { p } = Astro.props;
+const d = p.data;
+const lit = d.status === 'live' || d.status === 'research';
+const status = { live: 'Live', research: 'Published', 'in-development': 'Building', alpha: 'Alpha', planning: 'Planning', archived: 'Earlier' }[d.status];
+const number = d.metrics[0] ? `${d.metrics[0].value} ${d.metrics[0].label}` : d.stack.slice(0, 3).join(', ');
+---
+<li class="border-b border-rule">
+  <a href={`/projects/${p.id}`} class="row grid items-baseline gap-x-8 gap-y-2 py-7 md:grid-cols-[14px_340px_1fr_260px_90px]">
+    <span class={`mark self-center ${lit ? 'mark-on' : 'mark-off'}`} aria-hidden="true"></span>
+    <span class="row-title text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] md:text-4xl">{d.title}</span>
+    <span class="text-lg leading-[1.35]">{d.short ?? d.tagline}</span>
+    <span class="text-lg leading-[1.35]">{number}</span>
+    <span class="text-[15px] text-chalk-dim md:text-right">{status}</span>
+  </a>
+</li>

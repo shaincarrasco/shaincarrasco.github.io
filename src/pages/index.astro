@@ -1,30 +1,116 @@
 ---
 import Base from '../layouts/Base.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
+import stats from '../data/stats.json';
+
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const featured = all.filter((p) => p.data.featured).slice(0, 3);
-const rest = all.filter((p) => !p.data.featured && p.data.status !== 'archived');
+const rows = all.filter((p) => p.data.category !== 'archive');
+const earlier = all.filter((p) => p.data.category === 'archive');
+const on = new Set(['live', 'research']);
 ---
-<Base title="Shain Carrasco — I build things that work" description="ML products, research tools and games — shipped, measured, in use. Climb Intel, HoopLab, WildAtlas, telescope-scheduler metrics, and the tools behind them.">
-  <section class="grid-bg border-b border-line/60">
-    <div class="mx-auto max-w-6xl px-5 pb-16 pt-20 md:pb-24 md:pt-32">
-      <p class="mb-4 text-sm uppercase tracking-[0.2em] text-muted">Shain Carrasco · Chicago</p>
-      <h1 class="max-w-4xl text-5xl font-semibold leading-[0.95] tracking-tight md:text-7xl">I build things that <span class="text-lime glow-lime">work</span>.</h1>
-      <p class="mt-6 max-w-2xl text-lg text-muted md:text-xl">ML products, research tools and games — shipped, measured, in use. Every number on this site links to where it was measured.</p>
-      <div class="mt-8 flex gap-3">
-        <a href="/projects" class="rounded-full bg-lime px-5 py-2.5 font-medium text-bg hover:brightness-110">See the work</a>
-        <a href="/climbintel" class="rounded-full border border-line px-5 py-2.5 font-medium hover:border-text">Climb Intel ↗</a>
+<Base
+  title="Shain Carrasco"
+  description="Software developer and student in Chicago. SkAI Institute research on telescope scheduling, Climb Intel, college basketball analytics, a 3D globe of life on Earth, and Roblox games."
+  image="/skai/poster.webp"
+>
+  <!-- Hero -->
+  <section class="mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-20 pt-24 md:grid-cols-[minmax(0,620px)_1fr] md:pt-36">
+    <div>
+      <h1 class="display text-[clamp(72px,11vw,152px)]">Shain<br />Carrasco</h1>
+      <p class="mt-10 max-w-[560px] text-[22px] leading-[1.4] md:text-2xl">
+        Software developer and student in Chicago. This summer I was a researcher at the SkAI Institute, scoring telescope
+        schedules on 105,890 Dark Energy Survey exposures. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
+        used by about {stats.climbintel.uniques30dLong} people a month, and build college basketball analytics, a 3D globe of
+        life on Earth, and Roblox games.
+      </p>
+    </div>
+    <figure class="mx-auto w-full max-w-[600px]">
+      <video class="globe aspect-square w-full" autoplay muted loop playsinline poster="/skai/des-globe-poster.webp" aria-label="The Dark Energy Survey's pointings on a slowly rotating celestial sphere">
+        <source src="/skai/des-globe.webm" type="video/webm" />
+        <source src="/skai/des-globe.mp4" type="video/mp4" />
+      </video>
+      <figcaption class="mt-3 text-center text-[15px] leading-snug text-chalk-dim">
+        Every Dark Energy Survey pointing, 2013–2019, on the celestial sphere. A figure from my SkAI work.
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- SkAI summer -->
+  <section id="skai" class="mx-auto max-w-[1280px] px-5 py-24">
+    <h2 class="h2 text-[40px] md:text-[56px]">Summer 2026 at the SkAI Institute</h2>
+    <p class="mt-5 max-w-[860px] text-[20px] leading-[1.4] md:text-2xl">
+      An AI telescope scheduler needs a number that says how good a night of observing was. I built one, and tested it on
+      every exposure the Dark Energy Survey took from the Blanco 4-metre telescope at Cerro Tololo, Chile, between 2013 and
+      2019. Advised by Prof. Alex Drlica-Wagner, with Paul Chichura and Rachel Hur.
+    </p>
+
+    <div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,840px)_1fr]">
+      <a href="/skai/poster.pdf" class="group block border border-rule bg-poster" aria-label="Open the poster as a PDF">
+        <img src="/skai/poster.webp" alt="Poster: Grading a Night in One Number. One score for how good a night of observing was, built on 105,889 DES exposures." width="1800" height="1200" class="block w-full" loading="lazy" />
+        <span class="block px-5 py-3 text-[15px] text-[#cfe3ea] group-hover:text-white">Poster presented at SkAI, 2026. Opens the PDF.</span>
+      </a>
+      <div class="flex flex-col gap-8">
+        <div><div class="big text-5xl">105,890</div><p class="mt-2 text-lg leading-snug">real exposures scored</p></div>
+        <div><div class="big text-5xl">0.952</div><p class="mt-2 text-lg leading-snug">log-correlation between my calibrated effective exposure time and the DES pipeline's own, on 74,323 exposures</p></div>
+        <div><div class="big text-5xl">615</div><p class="mt-2 text-lg leading-snug">nights graded; the ranking holds under reweighting (Spearman ≥ 0.98)</p></div>
+        <p class="text-lg leading-[1.4]">
+          One finding: pooled across the survey, seeing looks like it <em>improves</em> with airmass, which is physically
+          backwards. The scheduler only points low when conditions are already good. A reward trained on raw logs inherits that bias.
+        </p>
       </div>
     </div>
-  </section>
-  <section class="mx-auto max-w-6xl px-5 py-16">
-    <div class="grid gap-4 md:grid-cols-3 md:auto-rows-fr">
-      {featured.map((p, i) => <ProjectCard project={p} big={i === 0} />)}
+
+    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        ['/skai/skymap.webp', 'The whole sky, graded by depth'],
+        ['/skai/teff.webp', 'Calibrated effective exposure time against the DES pipeline'],
+        ['/skai/nights.webp', 'Best and worst nights, hour by hour'],
+        ['/skai/airmass.webp', "Seeing against airmass: the Simpson's paradox"],
+      ].map(([src, cap]) => (
+        <figure class="border border-rule bg-night-2">
+          <img src={src} alt={cap} class="block aspect-[4/3] w-full object-cover object-left-top" loading="lazy" />
+          <figcaption class="px-4 py-3 text-[15px] leading-snug text-chalk-dim">{cap}</figcaption>
+        </figure>
+      ))}
+    </div>
+
+    <div class="mt-8 flex flex-wrap gap-x-9 gap-y-3 text-lg font-semibold">
+      <a href="/skai/poster.pdf" class="link">Poster (PDF)</a>
+      <a href="https://shaincarrasco.github.io/skai-metrics/" class="link">Live dashboard, every figure</a>
+      <a href="/projects/skai-metrics" class="link">The write-up</a>
     </div>
   </section>
-  <section class="mx-auto max-w-6xl px-5 pb-8">
-    <h2 class="mb-6 text-sm uppercase tracking-[0.2em] text-muted">More work</h2>
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{rest.map((p) => <ProjectCard project={p} />)}</div>
+
+  <!-- Work logbook -->
+  <section id="work" class="mx-auto max-w-[1280px] px-5 py-24">
+    <div class="flex flex-wrap items-end justify-between gap-6 border-b border-rule pb-7">
+      <h2 class="h2 text-[40px] md:text-[56px]">Work</h2>
+      <p class="max-w-[420px] text-[15px] leading-snug text-chalk-dim md:text-right">
+        Everything since 2022. Each number was measured; the project page says how. Private repos show the product, not the code.
+      </p>
+    </div>
+    <ol>
+      {rows.map((p) => {
+        const d = p.data;
+        const lit = on.has(d.status);
+        const status = { live: 'Live', research: 'Published', 'in-development': 'Building', alpha: 'Alpha', planning: 'Planning', archived: 'Earlier' }[d.status];
+        return (
+          <li class="border-b border-rule">
+            <a href={`/projects/${p.id}`} class="row grid items-baseline gap-x-8 gap-y-2 py-7 md:grid-cols-[14px_340px_1fr_260px_90px]">
+              <span class={`mark self-center ${lit ? 'mark-on' : 'mark-off'}`} aria-hidden="true"></span>
+              <span class="row-title text-[28px] font-semibold leading-[1.1] tracking-[-0.02em] md:text-4xl">{d.title}</span>
+              <span class="text-lg leading-[1.35]">{d.short ?? d.tagline}</span>
+              <span class="text-lg leading-[1.35]">{d.metrics[0] ? `${d.metrics[0].value} ${d.metrics[0].label}` : d.stack.slice(0, 3).join(', ')}</span>
+              <span class="text-[15px] text-chalk-dim md:text-right">{status}</span>
+            </a>
+          </li>
+        );
+      })}
+    </ol>
+    {earlier.length > 0 && (
+      <p class="mt-8 text-[15px] text-chalk-dim">
+        Earlier: {earlier.map((p, i) => (<><a href={p.data.repo ?? `/projects/${p.id}`} class="link">{p.data.title}</a>{i < earlier.length - 1 ? ', ' : ''}</>))}
+      </p>
+    )}
   </section>
 </Base>

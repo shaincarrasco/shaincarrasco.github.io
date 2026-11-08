@@ -6,6 +6,7 @@ const projects = defineCollection({
   schema: z.object({
     title: z.string(),
     tagline: z.string(),
+    short: z.string().optional(),
     status: z.enum(['live', 'in-development', 'research', 'alpha', 'planning', 'archived']),
     visibility: z.enum(['public', 'private']),
     category: z.enum(['product', 'research', 'tools', 'games', 'archive']),

@@ -15,9 +15,9 @@ const items = [
 <Base title="Now — Shain Carrasco" description="What I'm working on right now and what's next.">
   <div class="mx-auto max-w-4xl px-5 py-16">
     <h1 class="text-4xl font-semibold tracking-tight md:text-5xl">Now</h1>
-    <p class="mt-3 text-muted">What I'm working on. Updated <span class="num">{updated}</span>.</p>
+    <p class="mt-3 text-chalk-dim">What I'm working on. Updated <span class="num">{updated}</span>.</p>
     <table class="mt-10 w-full text-left">
-      <tbody>{items.map(([h, t, href]) => <tr class="border-b border-line/60"><td class="num w-28 py-3 pr-4 text-sm text-muted">{h}</td><td class="py-3"><a href={href} class="hover:text-lime">{t}</a></td></tr>)}</tbody>
+      <tbody>{items.map(([h, t, href]) => <tr class="border-b border-rule"><td class="w-28 py-3 pr-4 text-sm text-chalk-dim">{h}</td><td class="py-3"><a href={href} class="hover:text-amber">{t}</a></td></tr>)}</tbody>
     </table>
   </div>
 </Base>
