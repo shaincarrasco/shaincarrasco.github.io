@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { asset } from '../lib/images';
+import { LINKEDIN } from '../data/linkedin';
 interface Props { headingLevel?: 'h1' | 'h2' }
 const { headingLevel = 'h2' } = Astro.props;
 const H = headingLevel;
@@ -16,8 +17,24 @@ const figures: [string, string][] = [
   <p class="mt-5 max-w-[860px] text-[20px] leading-[1.4] md:text-2xl">
     An AI telescope scheduler needs a number that says how good a night of observing was. I built one, and tested it on
     every exposure the Dark Energy Survey took from the Blanco 4-metre telescope at Cerro Tololo, Chile, between 2013 and
-    2019. Advised by Prof. Alex Drlica-Wagner, with Paul Chichura and Rachel Hur.
+    2019. I designed, built and validated it myself, advised by Prof. Alex Drlica-Wagner.
   </p>
+
+  <div class="mt-12 border-t border-rule pt-10">
+    <div class="max-w-[720px]">
+      <p class="text-[15px] text-chalk-dim">SEED Researcher, NSF-Simons AI Institute for the Sky, summer 2026</p>
+      <p class="mt-3 text-lg leading-[1.45]">
+        A nine-week research program at the intersection of AI and astrophysical data. My pipeline turned the metric into a
+        depth map of the whole survey footprint, built from 74,204 exposures across 1,814 sky hexes and cross-validated to within
+        0.2%. I presented that map at the program's closing symposium, then at the poster session.
+      </p>
+      <ul class="mt-6 flex flex-col gap-3 text-[17px]">
+        <li><a href={LINKEDIN.spotlight} class="link font-semibold">SkAI's spotlight on my project</a> <span class="text-chalk-dim">on LinkedIn</span></li>
+        <li><a href={LINKEDIN.scheduler} class="link font-semibold">The AI scheduler my metric is built for, observing on the Blanco telescope</a> <span class="text-chalk-dim">on LinkedIn</span></li>
+        <li><a href={LINKEDIN.cohort} class="link font-semibold">The 2026 SEED cohort</a> <span class="text-chalk-dim">on LinkedIn</span></li>
+      </ul>
+    </div>
+  </div>
 
   <div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,840px)_1fr]">
     <a href="/skai/poster.pdf" class="group block border border-rule bg-poster">
