@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import { asset } from '../lib/images';
+import pose from '../data/pose-overhang.json';
+
+// Bones between the 17 joints Climb Intel tracks (MediaPipe Pose indices).
+const BONES: [number, number][] = [
+  [11, 12], [11, 13], [13, 15], [15, 19], [12, 14], [14, 16], [16, 20],
+  [11, 23], [12, 24], [23, 24], [23, 25], [25, 27], [27, 31], [24, 26], [26, 28], [28, 32], [0, 11], [0, 12],
+];
+const P = pose.points as Record<string, [number, number, number]>;
+const bones = BONES.map(([a, b], i) => ({ a: P[a], b: P[b], i, len: Math.hypot(P[a][0] - P[b][0], P[a][1] - P[b][1]) }));
+const joints = Object.entries(P).map(([k, v], i) => ({ k, x: v[0], y: v[1], i }));
+
+type Tile = { href: string; img: string; alt: string; caption: string; cls: string; fit?: 'cover' | 'contain'; pos?: string; bg?: string };
+const tiles: Tile[] = [
+  { href: '/projects/skai-metrics/', img: 'skai/poster.png', alt: 'Poster: A Report Card for the Night Sky', caption: 'SkAI research poster', cls: 'md:col-span-3 md:row-span-1', pos: 'center top' },
+  { href: '/#games', img: 'games/be-a-stone-thumb.png', alt: 'Be a Stone on Roblox', caption: 'Be a Stone, on Roblox', cls: 'md:col-span-3 md:row-span-1' },
+  { href: '/projects/upset/', img: 'shots/upset.png', alt: 'Upset: a fantasy matchup priced as a win probability', caption: 'Upset', cls: 'md:col-span-4', pos: 'left top' },
+  { href: '/projects/wildatlas/', img: 'shots/wildatlas.png', alt: 'WildAtlas: a 3D globe of life on Earth', caption: 'WildAtlas', cls: 'md:col-span-4', pos: 'center' },
+  { href: '/#games', img: 'games/scrap-items-sheet.png', alt: 'Scrap City item cards', caption: 'Scrap City items', cls: 'md:col-span-2', pos: 'left top', bg: '#1a1712' },
+  { href: '/projects/lipread/', img: 'shots/lipread.png', alt: 'LipRead running on a phone', caption: 'LipRead', cls: 'md:col-span-2', pos: 'center top' },
+];
+---
+<section aria-label="A collection of my work" class="mx-auto max-w-[1280px] px-5">
+  <div class="collection grid auto-rows-[160px] grid-cols-2 gap-3 md:auto-rows-[200px] md:grid-cols-12">
+    <!-- Climb Intel: the real pose model output, drawn over a climber -->
+    <a href="/projects/climb-intel/" class="tile group relative col-span-2 row-span-2 overflow-hidden border border-rule md:col-span-6" style="--d:0">
+      <Image src={asset('collection/climber-overhang.jpg')} alt="A climber on an overhanging wall, with Climb Intel's pose model tracking her joints" widths={[640, 960, 1280, 1600]} sizes="(min-width: 768px) 630px, calc(100vw - 40px)" class="tile-img absolute inset-0 h-full w-full object-cover" loading="eager" fetchpriority="high" />
+      <svg class="pose absolute inset-0 h-full w-full" viewBox={`0 0 ${pose.w} ${pose.h}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        {bones.map((b) => (
+          <line x1={b.a[0]} y1={b.a[1]} x2={b.b[0]} y2={b.b[1]} class="bone" style={`--len:${b.len.toFixed(0)};--i:${b.i}`} />
+        ))}
+        {joints.map((j) => (<circle cx={j.x} cy={j.y} r="9" class="joint" style={`--i:${j.i}`} />))}
+      </svg>
+      <span class="caption">Climb Intel's pose model, 17 joints, on a climber</span>
+    </a>
+
+    <!-- The DES sky survey, rotating -->
+    <a href="/projects/skai-metrics/" class="tile relative col-span-2 row-span-2 overflow-hidden border border-rule bg-night md:col-span-3" style="--d:1">
+      <video id="globe" class="absolute inset-0 h-full w-full object-contain" muted loop playsinline preload="none" width="720" height="720" poster="/skai/des-globe-poster.webp" aria-label="The Dark Energy Survey's pointings on a slowly rotating celestial sphere">
+        <source src="/skai/des-globe.webm" type="video/webm" />
+        <source src="/skai/des-globe.mp4" type="video/mp4" />
+      </video>
+      <span class="caption">Every Dark Energy Survey pointing, from my SkAI work</span>
+    </a>
+
+    {tiles.map((t, i) => (
+      <a href={t.href} class={`tile relative overflow-hidden border border-rule ${t.cls}`} style={`--d:${i + 2};${t.bg ? `background:${t.bg}` : ''}`}>
+        <Image src={asset(t.img)} alt={t.alt} widths={[400, 640, 960]} sizes="(min-width: 768px) 420px, 50vw" class={`tile-img absolute inset-0 h-full w-full object-${t.fit ?? 'cover'}`} style={`object-position:${t.pos ?? 'center'}`} loading="lazy" />
+        <span class="caption">{t.caption}</span>
+      </a>
+    ))}
+  </div>
+  <p class="mt-3 text-[13px] text-chalk-dim">
+    Climbing photo by <a href="https://unsplash.com/photos/NY1D4Zni7fc" class="underline underline-offset-2">Yns Plt</a> on Unsplash; the skeleton is MediaPipe Pose output, the model Climb Intel uses.
+  </p>
+</section>
+
+<style>
+  .tile { display: block; isolation: isolate; }
+  .tile-img { transition: transform 600ms cubic-bezier(.2,.7,.2,1); }
+  .tile:hover .tile-img, .tile:focus-visible .tile-img { transform: scale(1.035); }
+  .caption {
+    position: absolute; left: 0; bottom: 0; z-index: 2;
+    padding: 6px 10px; font-size: 14px; line-height: 1.25;
+    background: #07090c; color: #f2ead9; max-width: calc(100% - 16px);
+  }
+  .tile:hover .caption { color: var(--color-amber); }
+
+  /* One orchestrated reveal on load: tiles open upward in sequence, then the skeleton draws itself. */
+  .tile { animation: tile-in 700ms cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--d) * 70ms); }
+  @keyframes tile-in { from { clip-path: inset(100% 0 0 0); opacity: .2; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+
+  .bone {
+    stroke: #e3a33c; stroke-width: 7; stroke-linecap: round;
+    stroke-dasharray: var(--len); stroke-dashoffset: var(--len);
+    animation: draw 520ms ease-out forwards; animation-delay: calc(650ms + var(--i) * 55ms);
+    filter: drop-shadow(0 0 6px rgba(227,163,60,.55));
+  }
+  .joint {
+    fill: #f2ead9; stroke: #07090c; stroke-width: 3;
+    transform-box: fill-box; transform-origin: center; transform: scale(0);
+    animation: pop 380ms cubic-bezier(.3,1.6,.5,1) forwards; animation-delay: calc(600ms + var(--i) * 55ms);
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes pop { to { transform: scale(1); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tile { animation: none; }
+    .bone { animation: none; stroke-dashoffset: 0; }
+    .joint { animation: none; transform: scale(1); }
+    .tile-img { transition: none; }
+  }
+</style>
