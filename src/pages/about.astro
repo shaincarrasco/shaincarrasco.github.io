@@ -1,7 +1,5 @@
 ---
 import Base from '../layouts/Base.astro';
-import { Image } from 'astro:assets';
-import { asset } from '../lib/images';
 import { SITE } from '../site';
 import { LINKEDIN } from '../data/linkedin';
 
@@ -71,12 +69,7 @@ const stack: [string, string][] = [
     </div>
 
     <aside class="lg:pt-6" aria-label="Details">
-      <figure>
-        <Image src={asset('skai/shain-skai-portrait.png')} alt="Shain Carrasco" widths={[340, 680]} sizes="(min-width: 1024px) 340px, 100vw" class="block h-auto w-full border border-rule" loading="eager" />
-        <figcaption class="mt-2 text-[13px] text-chalk-dim">At SkAI, summer 2026. Photo by Gema Julissa Tinoco for SkAI.</figcaption>
-      </figure>
-
-      <h2 class="mt-10 border-b border-rule pb-4 text-2xl font-semibold">Contact</h2>
+      <h2 class="border-b border-rule pb-4 text-2xl font-semibold">Contact</h2>
       <ul class="mt-4 flex flex-col gap-3 text-lg [overflow-wrap:anywhere]">
         <li><a href={`mailto:${SITE.email}`} class="link">{SITE.email}</a></li>
         <li><a href={SITE.linkedin} class="link" rel="me">LinkedIn</a></li>
