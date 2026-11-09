@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import { renderCard, type Card } from '../../lib/og';
 
 const pages: Record<string, Card> = {
-  home: { title: 'Shain Carrasco', line: 'Software developer in Chicago. SkAI telescope research, Climb Intel, basketball analytics, a globe of life on Earth, Roblox games.', image: 'skai/des-globe-poster.webp' },
+  home: { title: 'Shain Carrasco', line: 'Software developer in Chicago. SkAI telescope research, Climb Intel, Roblox games, basketball analytics, a globe of life on Earth.', image: 'collection/climber-overhang.jpg' },
   work: { title: 'Work', line: 'Every project since 2022, with the number each one was measured on.' },
   research: { kicker: 'SkAI Institute, summer 2026', title: 'A report card for the night sky', line: 'A score for AI telescope schedulers, calibrated on 74,323 Dark Energy Survey exposures.', image: 'skai/poster.png' },
   now: { title: 'Now', line: 'What I am building this month, and what comes next.' },

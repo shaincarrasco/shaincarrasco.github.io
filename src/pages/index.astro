@@ -5,12 +5,14 @@ import stats from '../data/stats.json';
 import SkaiFeature from '../components/SkaiFeature.astro';
 import Row from '../components/Row.astro';
 import Feature from '../components/Feature.astro';
+import GamesFeature from '../components/GamesFeature.astro';
+import Collection from '../components/Collection.astro';
 import { SITE } from '../site';
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
 const FEATURED = ['climb-intel', 'upset', 'wildatlas', 'lipread'];
 const featured = FEATURED.map((id) => all.find((p) => p.id === id)!).filter(Boolean);
-const rows = all.filter((p) => !FEATURED.includes(p.id) && p.id !== 'skai-metrics' && p.data.status !== 'planning' && p.data.category !== 'archive');
+const rows = all.filter((p) => !FEATURED.includes(p.id) && !['skai-metrics', 'roblox-games'].includes(p.id) && p.data.status !== 'planning' && p.data.category !== 'archive');
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
@@ -31,26 +33,16 @@ const jsonLd = {
 ---
 <Base jsonLd={jsonLd} type="profile">
   <!-- Hero -->
-  <section class="mx-auto grid max-w-[1280px] items-center gap-12 px-5 pb-20 pt-24 md:grid-cols-[minmax(0,620px)_1fr] md:pt-36">
-    <div>
-      <h1 class="display text-[clamp(72px,11vw,152px)]">Shain<br />Carrasco</h1>
-      <p class="mt-10 max-w-[560px] text-[22px] leading-[1.4] md:text-2xl">
-        Software developer and student in Chicago. This summer I was a researcher at the SkAI Institute, building a score
-        for how good a night of telescope observing was, tested on Dark Energy Survey data. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
-        which had {stats.climbintel.uniques30dLong} unique visitors in the last 30 days, and build college basketball analytics, a 3D globe of
-        life on Earth, and Roblox games.
-      </p>
-    </div>
-    <figure class="mx-auto w-full max-w-[600px]">
-      <video id="globe" class="globe aspect-square w-full" muted loop playsinline preload="none" width="720" height="720" poster="/skai/des-globe-poster.webp" aria-label="The Dark Energy Survey's pointings on a slowly rotating celestial sphere">
-        <source src="/skai/des-globe.webm" type="video/webm" />
-        <source src="/skai/des-globe.mp4" type="video/mp4" />
-      </video>
-      <figcaption class="mt-3 text-center text-[15px] leading-snug text-chalk-dim">
-        Every Dark Energy Survey pointing, 2013–2019, on the celestial sphere. A figure from my SkAI work.
-      </figcaption>
-    </figure>
+  <section class="mx-auto grid max-w-[1280px] items-end gap-8 px-5 pb-12 pt-20 md:grid-cols-[minmax(0,1fr)_minmax(0,520px)] md:gap-12 md:pt-28">
+    <h1 class="display text-[clamp(64px,10.5vw,148px)]">Shain<br />Carrasco</h1>
+    <p class="max-w-[560px] text-[20px] leading-[1.4] md:pb-3 md:text-[22px]">
+      Software developer and student in Chicago. This summer I was a researcher at the SkAI Institute, building a score for
+      how good a night of telescope observing was. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
+      which had {stats.climbintel.uniques30dLong} unique visitors in the last 30 days, make Roblox games, and build college
+      basketball analytics and a 3D globe of life on Earth.
+    </p>
   </section>
+  <Collection />
 
   <script is:inline>
     // Start the globe after the page has loaded, and only if the visitor has not asked for reduced motion.
@@ -71,7 +63,12 @@ const jsonLd = {
     </div>
     <ol>{featured.map((p, i) => <Feature p={p} eager={i === 0} />)}</ol>
 
-    <h2 class="mt-24 border-b border-rule pb-5 text-3xl font-semibold tracking-[-0.02em]">More projects</h2>
+  </section>
+
+  <GamesFeature />
+
+  <section class="mx-auto max-w-[1280px] px-5 pb-24" aria-labelledby="more-title">
+    <h2 id="more-title" class="border-b border-rule pb-5 text-3xl font-semibold tracking-[-0.02em]">More projects</h2>
     <ol>{rows.map((p) => <Row p={p} />)}</ol>
     <p class="mt-8 text-[17px]"><a href="/projects/" class="link">Everything, including planning-stage and earlier projects</a></p>
   </section>
