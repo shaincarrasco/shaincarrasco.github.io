@@ -1,12 +1,36 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import { asset } from '../lib/images';
 import { SITE } from '../site';
+import { LINKEDIN } from '../data/linkedin';
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfilePage',
-  url: `${SITE.url}/about`,
-  mainEntity: { '@id': `${SITE.url}/#person`, '@type': 'Person', name: SITE.name, url: SITE.url, jobTitle: SITE.role, sameAs: [SITE.github, SITE.linkedin].filter(Boolean) },
+  url: `${SITE.url}/about/`,
+  mainEntity: {
+    '@id': `${SITE.url}/#person`,
+    '@type': 'Person',
+    name: SITE.name,
+    url: SITE.url,
+    email: `mailto:${SITE.email}`,
+    jobTitle: SITE.role,
+    alumniOf: { '@type': 'CollegeOrUniversity', name: SITE.school },
+    sameAs: [SITE.github, SITE.linkedin],
+  },
 };
+
+const experience: { when: string; role: string; where: string; what: string; href?: string }[] = [
+  { when: '2026', role: 'SEED Researcher', where: 'NSF-Simons AI Institute for the Sky (SkAI)', what: 'Built the evaluation metric an AI telescope scheduler is judged by, on Dark Energy Survey data. Presented the resulting sky depth map at the closing symposium and poster session.', href: '/research/' },
+  { when: '2026', role: 'Founder and developer', where: 'Climb Intel', what: 'A live climbing app with paid subscriptions: ML route grading, pose-based video coaching, a training log.', href: '/projects/climb-intel/' },
+  { when: '2026', role: 'Game developer', where: 'Plymouth Experiences', what: 'Roblox games; Be a Stone is published on Roblox.', href: '/projects/roblox-games/' },
+  { when: '2018 to now', role: 'Freelance developer', where: 'Self-employed', what: 'Automation tools in Python and JavaScript, used by more than 1,500 people.' },
+  { when: '2024 to 2026', role: 'Co-founder', where: 'SnoFly', what: 'A snowboarding gear brand. Ran the online store and the customer experience end to end.' },
+  { when: '2024 to 2026', role: 'Lifeguard', where: 'City of Evanston', what: 'Part-time, with CPR and first aid certification.' },
+  { when: '2023 to 2024', role: 'Volunteer coordinator and tutor', where: 'FORA: Forging Opportunities for Refugees in America', what: 'Coordinated volunteers and tutored.' },
+];
+
 const stack: [string, string][] = [
   ['Languages', 'Python, TypeScript, JavaScript, Go, Luau, SQL, Swift'],
   ['Data and ML', 'pandas, NumPy, scikit-learn, XGBoost, LightGBM, PyTorch, MediaPipe, OpenCV, astropy'],
@@ -15,26 +39,58 @@ const stack: [string, string][] = [
   ['Shipping', 'GitHub Actions, Railway, Vercel, Cloudflare, Playwright'],
 ];
 ---
-<Base title="About" description="Shain Carrasco is a software developer and researcher in Chicago: ML products, astronomy research at SkAI, sports analytics and Roblox games." og="/og/about.png" jsonLd={jsonLd} type="profile">
-  <div class="mx-auto grid max-w-[1280px] gap-16 px-5 py-20 lg:grid-cols-[minmax(0,1fr)_380px]">
+<Base title="About" description="Shain Carrasco studies Computer Science and Economics at DePaul University and builds ML products, astronomy research tools, sports analytics and Roblox games in Chicago." og="/og/about.png" jsonLd={jsonLd} type="profile">
+  <div class="mx-auto grid max-w-[1280px] gap-16 px-5 py-20 lg:grid-cols-[minmax(0,1fr)_340px]">
     <div>
       <h1 class="h2 text-[48px] md:text-[80px]">About</h1>
       <div class="prose-custom mt-10 text-[19px]">
-        <p>I'm Shain Carrasco, a software developer in Chicago. I study at DePaul University, and this summer I was a researcher at the NSF-Simons AI Institute for the Sky, building a reward for AI telescope schedulers on Dark Energy Survey data.</p>
-        <p>Most of what I build starts as something I want to exist. I climb, so I made <a href="/projects/climb-intel/">Climb Intel</a>, which had about 29,000 unique visitors in the last 30 days and now sells subscriptions. I watch college basketball, so I'm building <a href="/projects/hooplab/">HoopLab</a>. I make Roblox games with my friend Trip; <a href="/projects/roblox-games/">Be a Stone</a> is published on Roblox.</p>
+        <p>I'm Shain Carrasco. I study Computer Science and Economics at DePaul University, where I'm on the Dean's List, and I grew up between the Bay Area, Paris and Evanston.</p>
+        <p>This summer I was a SEED Researcher at the NSF-Simons AI Institute for the Sky, building the score an AI telescope scheduler is judged by. The highlight was visiting Fermilab, SkAI's partner lab, and seeing the scale of the physics research there first-hand.</p>
+        <p>Most of what I build starts as something I want to exist. I climb, so I made <a href="/projects/climb-intel/">Climb Intel</a>, which had about 29,000 unique visitors in the last 30 days and now sells subscriptions. I watch college basketball, so I'm building <a href="/projects/hooplab/">HoopLab</a>. I make Roblox games under my own studio; <a href="/projects/roblox-games/">Be a Stone</a> is published on Roblox.</p>
         <h2>How I work</h2>
         <p>Every project gets a short spec with a cut line, saying what it will not do. It gets an oracle test against something I trust, a benchmark with the machine and method written down, and a review pass that tries to break it before release. If a number appears on this site, the project page says how it was measured.</p>
-        <p>I use Claude as a pair programmer. It writes much of the code from my specs; each README says how, and commits carry a co-author line.</p>
       </div>
+
+      <h2 class="mt-16 border-b border-rule pb-4 text-2xl font-semibold">Experience</h2>
+      <ol>
+        {experience.map((e) => {
+          const Tag = e.href ? 'a' : 'div';
+          return (
+            <li class="border-b border-rule">
+              <Tag href={e.href} class="row grid gap-x-8 gap-y-1 py-5 md:grid-cols-[140px_minmax(0,1fr)]">
+                <span class="text-[15px] text-chalk-dim md:pt-1">{e.when}</span>
+                <span>
+                  <span class="row-title block text-xl font-semibold">{e.role}, {e.where}</span>
+                  <span class="mt-1 block text-[17px] leading-snug">{e.what}</span>
+                </span>
+              </Tag>
+            </li>
+          );
+        })}
+      </ol>
     </div>
+
     <aside class="lg:pt-6" aria-label="Details">
-      <h2 class="border-b border-rule pb-4 text-2xl font-semibold">Contact</h2>
-      <ul class="mt-4 flex flex-col gap-3 text-lg">
-        {SITE.email && <li><a href={`mailto:${SITE.email}`} class="link">{SITE.email}</a></li>}
-        <li><a href={SITE.github} class="link" rel="me">github.com/shaincarrasco</a></li>
-        {SITE.linkedin && <li><a href={SITE.linkedin} class="link" rel="me">LinkedIn</a></li>}
+      <figure>
+        <Image src={asset('skai/shain-skai-portrait.png')} alt="Shain Carrasco" widths={[340, 680]} sizes="(min-width: 1024px) 340px, 100vw" class="block h-auto w-full border border-rule" loading="eager" />
+        <figcaption class="mt-2 text-[13px] text-chalk-dim">At SkAI, summer 2026. Photo by Gema Julissa Tinoco for SkAI.</figcaption>
+      </figure>
+
+      <h2 class="mt-10 border-b border-rule pb-4 text-2xl font-semibold">Contact</h2>
+      <ul class="mt-4 flex flex-col gap-3 text-lg [overflow-wrap:anywhere]">
+        <li><a href={`mailto:${SITE.email}`} class="link">{SITE.email}</a></li>
+        <li><a href={SITE.linkedin} class="link" rel="me">LinkedIn</a></li>
+        <li><a href={SITE.github} class="link" rel="me">GitHub</a></li>
       </ul>
-      <h2 class="mt-12 border-b border-rule pb-4 text-2xl font-semibold">What I use</h2>
+
+      <h2 class="mt-10 border-b border-rule pb-4 text-2xl font-semibold">From the internship</h2>
+      <ul class="mt-4 flex flex-col gap-3 text-[17px] leading-snug">
+        <li><a href={LINKEDIN.spotlight} class="link">SkAI's spotlight on my project</a></li>
+        <li><a href={LINKEDIN.scheduler} class="link">The AI scheduler, observing on the Blanco telescope</a></li>
+        <li><a href={LINKEDIN.cohort} class="link">The 2026 SEED cohort</a></li>
+      </ul>
+
+      <h2 class="mt-10 border-b border-rule pb-4 text-2xl font-semibold">What I use</h2>
       <dl class="mt-4 flex flex-col gap-4 text-[17px] leading-snug">
         {stack.map(([k, v]) => (<div><dt class="text-chalk-dim">{k}</dt><dd class="mt-1">{v}</dd></div>))}
       </dl>

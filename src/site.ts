@@ -7,8 +7,8 @@ export const SITE = {
   description:
     'Shain Carrasco, software developer in Chicago. SkAI Institute research on telescope scheduling, Climb Intel, college basketball analytics, a 3D globe of life on Earth, and Roblox games.',
   github: 'https://github.com/shaincarrasco',
-  // Set to show an email link in the header area, footer and About page. Left empty until Shain confirms which address to publish.
-  email: '',
-  linkedin: '',
+  email: 'shaintiberius@gmail.com',
+  linkedin: 'https://www.linkedin.com/in/shain-carrasco/',
   school: 'DePaul University',
+  degree: 'Computer Science and Economics',
 };
