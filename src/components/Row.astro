@@ -1,11 +1,12 @@
 ---
 import { STATUS_LABEL } from '../lib/status';
 import type { CollectionEntry } from 'astro:content';
+import { metricsOf } from '../lib/live';
 interface Props { p: CollectionEntry<'projects'> }
 const { p } = Astro.props;
 const d = p.data;
 const status = STATUS_LABEL[d.status];
-const m = d.metrics.find((x) => x.kind === 'measured');
+const m = metricsOf(p).find((x) => x.kind === 'measured');
 const number = m ? `${m.value} ${m.label}` : '';
 ---
 <li class="border-b border-rule">

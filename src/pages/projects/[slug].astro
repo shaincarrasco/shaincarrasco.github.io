@@ -5,6 +5,7 @@ import { SITE } from '../../site';
 import { Image } from 'astro:assets';
 import { asset } from '../../lib/images';
 import { STATUS_LABEL } from '../../lib/status';
+import { metricsOf, liveAsOf } from '../../lib/live';
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects');
@@ -21,8 +22,12 @@ const prev = all[(i - 1 + all.length) % all.length];
 const next = all[(i + 1) % all.length];
 
 const statusLabel = STATUS_LABEL[d.status];
+const metrics = metricsOf(p);
+const asOf = liveAsOf(p.id);
 const internal = d.live?.startsWith('/');
-const liveLabel = !d.live ? null : internal ? 'Open the dashboard' : `Open ${new URL(d.live).host.replace(/^www\./, '')}`;
+const liveHost = d.live && !internal ? new URL(d.live).host.replace(/^www\./, '') : null;
+// Projects hosted under this site's own domain get their name, not "Open shaincarrasco.github.io".
+const liveLabel = !d.live ? null : internal ? 'Open the dashboard' : liveHost === new URL(SITE.url).host ? `Open ${d.title}` : `Open ${liveHost}`;
 
 const url = new URL(`/projects/${p.id}/`, Astro.site).toString();
 const author = { '@type': 'Person', name: SITE.name, url: SITE.url };
@@ -70,14 +75,15 @@ const jsonLd =
     <div class="mx-auto grid max-w-[1280px] grid-cols-1 gap-16 px-5 pt-16 lg:grid-cols-[minmax(0,1fr)_340px]">
       <div class="prose-custom min-w-0"><Content /></div>
       <aside class="lg:sticky lg:top-10 lg:self-start" aria-label="Project facts">
-        {d.metrics.length > 0 && (
+        {metrics.length > 0 && (
           <div class="flex flex-col gap-7 border-b border-rule pb-8">
-            {d.metrics.map((m) => (
+            {metrics.map((m) => (
               <div>
                 <div class="big text-[44px]">{m.value}</div>
                 <p class="mt-1 text-[17px] leading-snug">{m.label}</p>
               </div>
             ))}
+            {asOf && <p class="text-[15px] text-chalk-dim">From the live site, updated {asOf.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/Chicago' })}.</p>}
           </div>
         )}
         <dl class="mt-8 grid grid-cols-[110px_minmax(0,1fr)] gap-x-4 gap-y-3 text-[16px] [overflow-wrap:anywhere]">

@@ -1,0 +1,38 @@
+---
+title: D1 Hoops
+tagline: Free analytics for every NCAA Division I men's basketball team. Opponent-adjusted power ratings, walk-forward game predictions graded in public, team and player pages, a matchup simulator, and a chart engine that also runs tennis, soccer and football.
+short: "Power ratings and game predictions for all 365 D-I basketball teams, graded in public every day. The same chart engine runs tennis, soccer and football."
+status: live
+visibility: public
+category: product
+repo: https://github.com/shaincarrasco/D1-Basketball-Analytics
+live: https://shaincarrasco.github.io/D1-Basketball-Analytics/
+stack: [Next.js, TypeScript, Rust, GitHub Actions, GitHub Pages, Vitest]
+metrics:
+  - { value: "78.3%", label: "of 568 out-of-sample game picks right this season (walk-forward backtest)", source: "https://shaincarrasco.github.io/D1-Basketball-Analytics/data/model-2027.json" }
+  - { value: "365", label: "Division I teams rated by the model, refreshed hourly in season", source: "https://shaincarrasco.github.io/D1-Basketball-Analytics/data/model-2027.json" }
+  - { value: "10.9", label: "points mean absolute error on the predicted margin", source: "https://shaincarrasco.github.io/D1-Basketball-Analytics/data/model-2027.json" }
+accent: amber
+image: shots/d1-hoops.png
+imageAlt: "D1 Hoops on a Saturday in November: today's 72 games ranked by watchability, with win probabilities and last night's upsets."
+order: 3
+year: 2026
+---
+
+The numbers on this page are pulled from the live site each time the portfolio builds, so they move with the season.
+
+## What it does
+
+Every morning D1 Hoops ranks tonight's slate by how worth watching each game is, gives each a pregame win probability, and grades yesterday's picks. Behind that are rankings for all 365 teams in four views (ratings, four factors, shooting, résumé), a page per team with its schedule and statistical comps, player leaderboards and profiles with game logs and shot diet, a matchup simulator for any two teams on any floor, conference standings with projected records, and a methodology page with live calibration.
+
+## The model
+
+DHR v2 is a ridge-regularised, opponent-adjusted rating for offence, defence and tempo, with conference priors, a jointly estimated home edge and a pooled node for non-D-I opponents. Every prediction is walk-forward: it uses only games finished before that game's date, so the backtest is the same thing a reader would have seen that morning. Misses stay on the scorecard.
+
+## More than basketball
+
+The player rankings, chart gallery and chart builder run on a sport-agnostic engine. Each sport is a pack of stats, filters, ranking lenses and charts that a validator checks. College basketball runs on live data; pro tennis, club soccer and college football packs run in the [sport lab](https://shaincarrasco.github.io/D1-Basketball-Analytics/lab/sports/) on clearly fictional sample players until real feeds are wired in.
+
+## How it runs
+
+GitHub Actions pulls season data from College Basketball Data daily, adds ESPN box scores hourly from noon to 4 a.m. Eastern, refits the ratings, and exports a static Next.js site to GitHub Pages. News, previews and injury reports come from a small Rust fetcher. Free to run, free to use.

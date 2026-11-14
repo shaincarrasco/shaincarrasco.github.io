@@ -3,10 +3,11 @@ import { Resvg } from '@resvg/resvg-js';
 import sharp from 'sharp';
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { THEME } from './theme';
 
 const fontDir = path.resolve('node_modules/@fontsource/bricolage-grotesque/files');
 let fonts: { name: string; data: Buffer; weight: 400 | 600 | 800; style: 'normal' }[] | null = null;
-async function loadFonts() {
+export async function loadFonts() {
   if (fonts) return fonts;
   const load = (w: 400 | 600 | 800) => fs.readFile(path.join(fontDir, `bricolage-grotesque-latin-${w}-normal.woff`));
   fonts = [
@@ -27,7 +28,7 @@ async function imageData(publicPath: string, width: number, maxHeight: number) {
 
 export interface Card { title: string; kicker?: string; line?: string; image?: string; }
 
-const NIGHT = '#07090c', CHALK = '#f2ead9', DIM = '#a79c88', AMBER = '#e3a33c', RULE = '#1c242c';
+const { night: NIGHT, chalk: CHALK, dim: DIM, accent: AMBER, rule: RULE } = THEME;
 
 export async function renderCard({ title, kicker, line, image }: Card): Promise<Buffer> {
   const IMG_W = 500, INNER_W = 1200 - 144, INNER_H = 630 - 144;
@@ -66,4 +67,26 @@ export async function renderCard({ title, kicker, line, image }: Card): Promise<
   };
   const svg = await satori(tree as any, { width: 1200, height: 630, fonts: await loadFonts() });
   return new Resvg(svg, { fitTo: { mode: 'width', value: 1200 } }).render().asPng();
+}
+
+/** The GitHub profile banner (1280x380). Text is drawn as paths, so it looks the same everywhere. */
+export async function renderBanner({ name, host, line }: { name: string; host: string; line: string }): Promise<string> {
+  const W = 1280, H = 380;
+  const tree = {
+    type: 'div',
+    props: {
+      style: { width: W, height: H, display: 'flex', background: NIGHT, fontFamily: 'Bricolage', color: CHALK, padding: '60px 72px' },
+      children: [
+        { type: 'div', props: { style: { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: H - 120, width: W - 144 }, children: [
+          { type: 'div', props: { style: { display: 'flex', alignItems: 'center', gap: 12 }, children: [
+            { type: 'div', props: { style: { width: 14, height: 14, borderRadius: 999, background: AMBER } } },
+            { type: 'span', props: { style: { fontSize: 24, color: DIM }, children: host } },
+          ] } },
+          { type: 'span', props: { style: { fontSize: 112, fontWeight: 800, letterSpacing: '-0.045em', lineHeight: 0.9 }, children: name } },
+          { type: 'span', props: { style: { fontSize: 28, lineHeight: 1.35, color: '#d9d1c0', maxWidth: 1000 }, children: line } },
+        ] } },
+      ],
+    },
+  };
+  return satori(tree as any, { width: W, height: H, fonts: await loadFonts() });
 }

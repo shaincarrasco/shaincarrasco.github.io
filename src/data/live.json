@@ -1,0 +1,23 @@
+{
+  "d1-hoops": {
+    "asOf": "2026-11-14T17:16:55.998Z",
+    "source": "https://shaincarrasco.github.io/D1-Basketball-Analytics/data/model-2027.json",
+    "metrics": [
+      {
+        "value": "78.3%",
+        "label": "of 568 out-of-sample game picks right this season (walk-forward backtest)",
+        "kind": "measured"
+      },
+      {
+        "value": "365",
+        "label": "Division I teams rated by the model, refreshed hourly in season",
+        "kind": "measured"
+      },
+      {
+        "value": "10.9",
+        "label": "points mean absolute error on the predicted margin",
+        "kind": "measured"
+      }
+    ]
+  }
+}
