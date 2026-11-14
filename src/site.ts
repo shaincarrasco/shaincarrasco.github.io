@@ -12,3 +12,18 @@ export const SITE = {
   school: 'DePaul University',
   degree: 'Computer Science and Economics',
 };
+
+// The home page's "Selected work", in order. The GitHub profile README is generated from this
+// list too (via /profile.json), so changing it here changes the profile within the hour.
+export const FEATURED = ['climb-intel', 'd1-hoops', 'upset', 'wildatlas', 'lipread'];
+
+// Extra rows for the profile README's table, after FEATURED.
+export const PROFILE_EXTRA: (string | { title: string; href: string; line: string })[] = [
+  'hooplab',
+  'roblox-games',
+  {
+    title: 'dowse, tripwire, catchup',
+    href: '/tools/',
+    line: 'Dependency-free tools: vault search for my agents, a secret scanner, a scheduler for a laptop that sleeps. 139 of 139 planted secrets found, 0 false alarms.',
+  },
+];

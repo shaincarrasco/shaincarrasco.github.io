@@ -5,7 +5,7 @@ import path from 'node:path';
 
 const projects = fs.readdirSync('src/content/projects').map((f) => f.replace(/\.mdx$/, ''));
 const pages = ['/', '/projects/', '/research/', '/now/', '/about/', '/tools/', ...projects.map((p) => `/projects/${p}/`)];
-const shotPages = new Set(['/', '/projects/upset/', '/projects/', '/research/', '/now/', '/about/', '/tools/', '/projects/climb-intel/', '/projects/skai-metrics/', '/projects/lipread/']);
+const shotPages = new Set(['/', '/projects/upset/', '/projects/', '/research/', '/now/', '/about/', '/tools/', '/projects/climb-intel/', '/projects/skai-metrics/', '/projects/lipread/', '/projects/d1-hoops/']);
 
 for (const p of pages) {
   test(`${p}: renders, links resolve, metadata complete, accessible`, async ({ page }, info) => {
@@ -89,4 +89,34 @@ test('SkAI dashboard, report and poster are self-hosted', async ({ page, request
     const src = await img.getAttribute('src');
     expect((await request.get(new URL(src!, page.url()).pathname)).status(), src!).toBe(200);
   }
+});
+
+test('profile feed: JSON for the GitHub README and a banner that matches the site', async ({ request }) => {
+  const res = await request.get('/profile.json');
+  expect(res.status()).toBe(200);
+  const feed = await res.json();
+  expect(feed.name).toBe('Shain Carrasco');
+  expect(feed.tagline).toContain('D1 Hoops');
+  expect(feed.work.length).toBeGreaterThanOrEqual(5);
+  for (const w of feed.work) {
+    expect(w.title).toBeTruthy();
+    expect(w.href).toMatch(/^https:\/\//);
+    expect(w.line).toMatch(/[.!?]$/);
+  }
+  const d1 = feed.work.find((w: { id: string }) => w.id === 'd1-hoops');
+  expect(d1.code).toBe('https://github.com/shaincarrasco/D1-Basketball-Analytics');
+  expect(d1.line).toMatch(/\d+(\.\d)?% of [\d,]+ out-of-sample game picks/);
+  const svg = await request.get('/profile/banner.svg');
+  expect(svg.status()).toBe(200);
+  const body = await svg.text();
+  expect(body.startsWith('<svg')).toBe(true);
+  expect(body).toContain(feed.theme.night);
+});
+
+test('D1 Hoops case study shows live numbers and links out', async ({ page }) => {
+  await page.goto('/projects/d1-hoops/');
+  await expect(page.locator('h1')).toHaveText('D1 Hoops');
+  await expect(page.getByText('From the live site, updated')).toHaveCount(1);
+  await expect(page.locator('a[href="https://shaincarrasco.github.io/D1-Basketball-Analytics/"]').first()).toBeVisible();
+  await expect(page.locator('a[href="https://github.com/shaincarrasco/D1-Basketball-Analytics"]').first()).toBeVisible();
 });

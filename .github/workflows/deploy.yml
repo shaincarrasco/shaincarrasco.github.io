@@ -3,6 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  schedule:
+    # Daily, after D1 Hoops' 11:30 UTC full refresh, so its numbers and screenshot are current.
+    - cron: "23 13 * * *"
+  # A project can ask for a rebuild right after it deploys:
+  #   gh api repos/shaincarrasco/shaincarrasco.github.io/dispatches -f event_type=project-updated
+  repository_dispatch:
+    types: [project-updated]
   workflow_dispatch:
 
 permissions:
@@ -20,10 +27,20 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v7
-      - name: Install, build, and upload the site
-        uses: withastro/action@v6
-        with:
-          package-manager: pnpm@10
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 24, cache: pnpm }
+      - run: pnpm install --frozen-lockfile
+      - name: Pull live numbers and screenshots from project sites
+        # Never blocks a deploy: if a project site is down, the committed snapshot is used.
+        continue-on-error: true
+        run: |
+          pnpm exec playwright install --with-deps chromium
+          node scripts/refresh-live.mjs --shots
+      - run: pnpm build
+      - uses: actions/upload-pages-artifact@v4
+        with: { path: dist }
 
   deploy:
     needs: build
@@ -35,3 +52,18 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
+
+  profile:
+    # Tell the profile README to resync now instead of waiting for its hourly run.
+    # Needs a PROFILE_SYNC_TOKEN secret (fine-grained PAT, Actions: write on shaincarrasco/shaincarrasco).
+    # Without it this step is skipped and the hourly sync picks the change up.
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the profile repo
+        env:
+          TOKEN: ${{ secrets.PROFILE_SYNC_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then echo "No PROFILE_SYNC_TOKEN; the hourly sync will pick this up."; exit 0; fi
+          curl -fsS -X POST -H "Authorization: Bearer $TOKEN" -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/shaincarrasco/shaincarrasco/dispatches -d '{"event_type":"site-deployed"}'

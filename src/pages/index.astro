@@ -7,10 +7,9 @@ import Row from '../components/Row.astro';
 import Feature from '../components/Feature.astro';
 import GamesFeature from '../components/GamesFeature.astro';
 import Collection from '../components/Collection.astro';
-import { SITE } from '../site';
+import { SITE, FEATURED } from '../site';
 
 const all = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
-const FEATURED = ['climb-intel', 'upset', 'wildatlas', 'lipread'];
 const featured = FEATURED.map((id) => all.find((p) => p.id === id)!).filter(Boolean);
 const rows = all.filter((p) => !FEATURED.includes(p.id) && !['skai-metrics', 'roblox-games'].includes(p.id) && p.data.status !== 'planning' && p.data.category !== 'archive');
 const jsonLd = {
@@ -38,8 +37,9 @@ const jsonLd = {
     <p class="max-w-[560px] text-[20px] leading-[1.4] md:pb-3 md:text-[22px]">
       Computer Science and Economics student at DePaul and software developer in Chicago. This summer I was a researcher at
       the SkAI Institute, building a score for how good a night of telescope observing was. I also run <a href="https://climbintel.com" class="link">Climb Intel</a>,
-      which had {stats.climbintel.uniques30dLong} unique visitors in the last 30 days, make Roblox games, and build college
-      basketball analytics and a 3D globe of life on Earth.
+      which had {stats.climbintel.uniques30dLong} unique visitors in the last 30 days, make Roblox games, and build
+      <a href="/projects/d1-hoops/" class="link">D1 Hoops</a>, college basketball analytics that grades its own predictions in public,
+      and a 3D globe of life on Earth.
     </p>
   </section>
   <Collection />

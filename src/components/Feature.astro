@@ -3,10 +3,11 @@ import type { CollectionEntry } from 'astro:content';
 import { Image } from 'astro:assets';
 import { asset } from '../lib/images';
 import { STATUS_LABEL } from '../lib/status';
+import { metricsOf } from '../lib/live';
 interface Props { p: CollectionEntry<'projects'>; eager?: boolean }
 const { p, eager = false } = Astro.props;
 const d = p.data;
-const measured = d.metrics.filter((m) => m.kind === 'measured').slice(0, 2);
+const measured = metricsOf(p).filter((m) => m.kind === 'measured').slice(0, 2);
 const phone = d.device === 'phone';
 ---
 <li class="border-b border-rule">
